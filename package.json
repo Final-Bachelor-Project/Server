@@ -6,7 +6,8 @@
   "scripts": {
     "dev": "nodemon --exec babel-node app.js",
     "lint": "eslint ./src",
-    "babel": "babel"
+    "babel": "babel",
+    "test": "jest --config ./jest.config.json"
   },
   "repository": {
     "type": "git",
@@ -32,6 +33,7 @@
     "eslint": "^8.14.0",
     "eslint-config-airbnb": "^19.0.4",
     "eslint-plugin-import": "^2.26.0",
+    "jest": "^27.5.1",
     "nodemon": "^2.0.15"
   },
   "eslintConfig": {

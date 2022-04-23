@@ -1,0 +1,8 @@
+{
+    "testRegex": "/__tests__/.*.spec.(js)?$",
+    "collectCoverage": true,
+    "collectCoverageFrom": [
+        "**/*.{js,jsx}",
+        "!**/node_modules/**"
+      ]
+}
