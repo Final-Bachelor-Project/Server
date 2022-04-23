@@ -4,7 +4,9 @@
   "description": "",
   "main": "app.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "dev": "nodemon --exec babel-node app.js",
+    "lint": "eslint ./",
+    "babel": "babel"
   },
   "repository": {
     "type": "git",
@@ -15,5 +17,47 @@
   "bugs": {
     "url": "https://github.com/Final-Bachelor-Project/Server/issues"
   },
-  "homepage": "https://github.com/Final-Bachelor-Project/Server#readme"
+  "homepage": "https://github.com/Final-Bachelor-Project/Server#readme",
+  "devDependencies": {
+    "@babel/core": "^7.17.9",
+    "@babel/node": "^7.16.8",
+    "@babel/preset-env": "^7.16.11",
+    "eslint": "^8.14.0",
+    "eslint-config-airbnb": "^19.0.4",
+    "eslint-plugin-import": "^2.26.0",
+    "nodemon": "^2.0.15"
+  },
+  "eslintConfig": {
+    "extends": "airbnb-base",
+    "env": {
+      "es6": true,
+      "browser": true
+    },
+    "rules": {
+      "brace-style": [
+        "error",
+        "stroustrup"
+      ],
+      "comma-dangle": [
+        "error",
+        "never"
+      ],
+      "no-unused-vars": [
+        "error"
+      ],
+      "no-var": [
+        "error"
+      ],
+      "one-var": [
+        "off"
+      ],
+      "no-const-assign": [
+        "error"
+      ],
+      "quotes": [
+        "error",
+        "backtick"
+      ]
+    }
+  }
 }
