@@ -18,6 +18,13 @@
     "url": "https://github.com/Final-Bachelor-Project/Server/issues"
   },
   "homepage": "https://github.com/Final-Bachelor-Project/Server#readme",
+  "dependencies": {
+    "body-parser": "^1.19.2",
+    "config": "^3.3.7",
+    "express": "^4.17.3",
+    "regenerator-runtime": "^0.13.9",
+    "smacker": "^1.0.5"
+  },
   "devDependencies": {
     "@babel/core": "^7.17.9",
     "@babel/node": "^7.16.8",
