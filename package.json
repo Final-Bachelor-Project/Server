@@ -5,7 +5,7 @@
   "main": "app.js",
   "scripts": {
     "dev": "nodemon --exec babel-node app.js",
-    "lint": "eslint ./",
+    "lint": "eslint ./src",
     "babel": "babel"
   },
   "repository": {
