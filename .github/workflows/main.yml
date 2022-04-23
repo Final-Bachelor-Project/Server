@@ -1,4 +1,4 @@
-name: CI
+name: Build and test
 
 on:
   pull_request:
@@ -24,3 +24,6 @@ jobs:
 
     - name: Run test
       run: npm test
+
+    - name: Run lint
+      run: npm lint
