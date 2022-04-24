@@ -1,3 +1,5 @@
+import serverErrorSafe from '../utils/serverErrorSafe';
+
 import User from '../models/user';
 
 const createUser = async (req, res) => {
@@ -17,5 +19,5 @@ const createUser = async (req, res) => {
 }
 
 export default {
-    createUser: createUser
+    createUser: serverErrorSafe(createUser)
 }
