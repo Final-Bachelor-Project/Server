@@ -1,4 +1,8 @@
 {
     "port": "PORT",
-    "connection": "CONNECTION"
+    "connection": "CONNECTION",
+    "clientId": "CLIENT_ID",
+    "clientSecret": "CLIENT_SECRET",
+    "redirectUri": "REDIRECT_URI",
+    "clientRedirectUri": "CLIENT_REDIRECT_URI"
 }

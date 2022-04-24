@@ -5,6 +5,7 @@ import serverErrorSafe from '../utils/serverErrorSafe';
 
 const router = express.Router();
 
+// Create user
 router.post('/', async (req, res) => {
     const user = await userService.createUser();
 
