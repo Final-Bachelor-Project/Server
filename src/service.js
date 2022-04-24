@@ -20,7 +20,7 @@ const start = async () => {
   await databaseService.connect();
 
   // Routes
-  app.use('/users', userRouter.router);
+  app.use('/api/users', userRouter.router);
   app.use('/api/login', loginRouter.router);
 
   // Start server

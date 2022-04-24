@@ -1,6 +1,7 @@
 import express from 'express';
 import config from 'config';
 import querystring from 'query-string';
+import axios from 'axios';
 
 import serverErrorSafe from '../utils/serverErrorSafe';
 
@@ -23,7 +24,6 @@ const generateRandomString = (length) => {
 const stateKey = 'spotify_auth_state';
 
 router.get('/', (req, res) => {
-  console.log('called');
   const state = generateRandomString(16);
   res.cookie(stateKey, state);
   res.header('Access-Control-Allow-Origin');
@@ -48,27 +48,44 @@ router.get('/', (req, res) => {
 });
 
 router.get('/callback', async (req, res) => {
-  const body = {
-    grant_type: 'authorization_code',
-    code: req.query.code,
-    redirect_uri: redirectUri,
-    client_id: clientId,
-    client_secret: clientSecret
-  };
+  const code = req.query.code;
 
-  await fetch('https://accounts.spotify.com/api/token', {
-    method: 'POST',
+  const response = await axios({
+    method: 'post',
+    url: 'https://accounts.spotify.com/api/token',
+    data: querystring.stringify({
+      grant_type: 'authorization_code',
+      code,
+      redirect_uri: redirectUri
+    }),
     headers: {
-      'Content-Type': 'application/x-www-form-urlencoded',
-      Accept: 'application/json'
+      'content-type': 'application/x-www-form-urlencoded',
+      Authorization: `Basic ${new Buffer.from(`${clientId}:${clientSecret}`).toString('base64')}`,
     },
-    body: encodeFormData(body)
   })
-    .then((response) => response.json())
-    .then((data) => {
-      const query = querystring.stringify(data);
-      res.redirect(`${clientRedirectUri}?${query}`);
-    });
+
+  const { access_token, token_type } = response.data;
+
+  console.log(access_token)
+
+//   const query = querystring.stringify(response.data, null, 2)
+//   console.log(query);
+//   res.redirect(`${clientRedirectUri}?${query}`)
+ 
+  //console.log(JSON.stringify(response.data, null, 2))
+//   await fetch('https://accounts.spotify.com/api/token', {
+//     method: 'POST',
+//     headers: {
+//       'Content-Type': 'application/x-www-form-urlencoded',
+//       Accept: 'application/json'
+//     },
+//     body: encodeFormData(body)
+//   })
+//     .then((response) => response.json())
+//     .then((data) => {
+//       const query = querystring.stringify(data);
+//       res.redirect(`${clientRedirectUri}?${query}`);
+//     });
 });
 
 export default {
