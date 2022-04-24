@@ -1,8 +1,6 @@
-import serverErrorSafe from '../utils/serverErrorSafe';
-
 import User from '../models/user';
 
-const createUser = async (req, res) => {
+const createUser = async () => {
    const user = await new User({
        spotifyUserId: "1234567",
        email: "user@email.com",
@@ -15,9 +13,9 @@ const createUser = async (req, res) => {
        createdAt: Date.now()
    }).save();
 
-   res.status(200).send(user)
+   return user;
 }
 
 export default {
-    createUser: serverErrorSafe(createUser)
+    createUser: createUser
 }
