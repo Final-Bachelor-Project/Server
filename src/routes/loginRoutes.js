@@ -10,7 +10,7 @@ const clientRedirectUri = config.get(`clientRedirectUri`);
 const clientId = config.get(`clientId`);
 const clientSecret = config.get(`clientSecret`)
 
-router.get('/login', async (req, res) => {
+router.get('/', async (req, res) => {
     const scope =
     `user-modify-playback-state
     user-read-playback-state

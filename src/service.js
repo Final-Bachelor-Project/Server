@@ -2,8 +2,9 @@ import express from 'express';
 import config from 'config';
 import bodyparser from 'body-parser';
 
-import databaseService from './services/databaseService'
-import userRouter from './routes/userRoutes'
+import databaseService from './services/databaseService';
+import userRouter from './routes/userRoutes';
+import loginRouter from './routes/loginRoutes';
 
 let service;
 const start = async () => {
@@ -18,6 +19,7 @@ const start = async () => {
 
     // Routes
     app.use('/users', userRouter.router);
+    app.use('/login', loginRouter.router);
 
     // Start server
     const port = config.get(`port`);
