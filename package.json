@@ -4,9 +4,9 @@
   "description": "",
   "main": "app.js",
   "scripts": {
-    "dev": "nodemon --exec babel-node app.js",
+    "start": "node src/app.js",
+    "dev": "nodemon --exec babel-node src/app.js",
     "lint": "eslint ./src",
-    "babel": "babel",
     "test": "jest --config ./jest.config.json"
   },
   "repository": {
