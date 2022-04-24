@@ -6,27 +6,27 @@ import serverErrorSafe from '../utils/serverErrorSafe';
 
 const router = express.Router();
 
-const redirectUri = config.get(`redirectUri`);
-const clientRedirectUri = config.get(`clientRedirectUri`);
-const clientId = config.get(`clientId`);
-const clientSecret = config.get(`clientSecret`);
+const redirectUri = config.get('redirectUri');
+const clientRedirectUri = config.get('clientRedirectUri');
+const clientId = config.get('clientId');
+const clientSecret = config.get('clientSecret');
 
 const generateRandomString = (length) => {
-  let text = ``;
-  const possible = `ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789`;
+  let text = '';
+  const possible = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
   for (let i = 0; i < length; i++) {
     text += possible.charAt(Math.floor(Math.random() * possible.length));
   }
   return text;
 };
 
-const stateKey = `spotify_auth_state`;
+const stateKey = 'spotify_auth_state';
 
-router.get(`/`, (req, res) => {
-  console.log(`called`);
+router.get('/', (req, res) => {
+  console.log('called');
   const state = generateRandomString(16);
   res.cookie(stateKey, state);
-  res.header(`Access-Control-Allow-Origin`);
+  res.header('Access-Control-Allow-Origin');
 
   const scope = `user-modify-playback-state
     user-read-playback-state
@@ -39,7 +39,7 @@ router.get(`/`, (req, res) => {
 
   res.redirect(`http://accounts.spotify.com/authorize?${
     querystring.stringify({
-      response_type: `code`,
+      response_type: 'code',
       client_id: clientId,
       scope,
       state,
@@ -47,20 +47,20 @@ router.get(`/`, (req, res) => {
     })}`);
 });
 
-router.get(`/callback`, async (req, res) => {
+router.get('/callback', async (req, res) => {
   const body = {
-    grant_type: `authorization_code`,
+    grant_type: 'authorization_code',
     code: req.query.code,
     redirect_uri: redirectUri,
     client_id: clientId,
     client_secret: clientSecret
   };
 
-  await fetch(`https://accounts.spotify.com/api/token`, {
-    method: `POST`,
+  await fetch('https://accounts.spotify.com/api/token', {
+    method: 'POST',
     headers: {
-      "Content-Type": `application/x-www-form-urlencoded`,
-      Accept: `application/json`
+      'Content-Type': 'application/x-www-form-urlencoded',
+      Accept: 'application/json'
     },
     body: encodeFormData(body)
   })

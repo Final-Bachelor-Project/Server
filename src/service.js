@@ -13,20 +13,20 @@ const start = async () => {
   const app = express();
   app.use(bodyparser.json());
   app.use(bodyparser.urlencoded({ extended: false }));
-  app.use(express.static(`public`));
+  app.use(express.static('public'));
   app.use(cors());
 
   // Database connection
   await databaseService.connect();
 
   // Routes
-  app.use(`/users`, userRouter.router);
-  app.use(`/api/login`, loginRouter.router);
+  app.use('/users', userRouter.router);
+  app.use('/api/login', loginRouter.router);
 
   // Start server
-  const port = config.get(`port`);
+  const port = config.get('port');
   service = app.listen(port);
-  console.log(`Now listening to port`, port);
+  console.log('Now listening to port', port);
 };
 
 const stop = async () => {
