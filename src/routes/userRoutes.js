@@ -9,10 +9,11 @@ const router = express.Router();
 // Create user
 router.post('/', async (req, res) => {
   const {
-    username, firstName, lastName, profileImage, country, city, bio
+    spotifyUserId, username, firstName, lastName, profileImage, country, city, bio
   } = req.body;
 
   const user = await userService.createUser(
+    spotifyUserId,
     username,
     firstName,
     lastName,
