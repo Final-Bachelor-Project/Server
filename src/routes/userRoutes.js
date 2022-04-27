@@ -9,7 +9,7 @@ const router = express.Router();
 // Create user
 router.post('/', async (req, res) => {
   const {
-    spotifyUserId, username, firstName, lastName, profileImage, country, city, bio
+    spotifyUserId, username, firstName, lastName, profileImage, country, city, bio, dateOfBirth
   } = req.body;
 
   const user = await userService.createUser(
@@ -21,25 +21,29 @@ router.post('/', async (req, res) => {
     country,
     city,
     bio,
+    dateOfBirth,
     { createdAt: Date.now() }
   );
 
-  console.log(user);
-
-  res.status(200).send(user);
+  if (user) {
+    res.status(200).send({ message: 'Successfully created user' });
+    return;
+  }
+  res.status(500).send({ message: 'Could not create user' });
 });
 
 // Get user data from Spotify API
 router.get('/current', async (req, res) => {
-  const { accessToken } = req.session;
+  const accessToken = req.session;
+  const user = await axios.get('https://api.spotify.com/v1/me', {
+    headers: { Authorization: `Bearer ${accessToken}` }
+  });
 
-  if (accessToken) {
-    const user = await axios.get('https://api.spotify.com/v1/me', {
-      headers: { Authorization: `Bearer ${accessToken}` }
-    });
-
+  if (user) {
     res.status(200).send({ user: user.data });
+    return;
   }
+  res.status(404).send({ message: 'User not found' });
 });
 
 export default {
