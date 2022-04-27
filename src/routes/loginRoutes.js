@@ -3,6 +3,7 @@ import config from 'config';
 import querystring from 'query-string';
 import axios from 'axios';
 
+import userService from '../services/userService';
 import serverErrorSafe from '../utils/serverErrorSafe';
 
 const router = express.Router();
@@ -15,6 +16,7 @@ const clientSecret = config.get('clientSecret');
 const generateRandomString = (length) => {
   let text = '';
   const possible = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+  // eslint-disable-next-line no-plusplus
   for (let i = 0; i < length; i++) {
     text += possible.charAt(Math.floor(Math.random() * possible.length));
   }
@@ -60,6 +62,7 @@ router.get('/callback', async (req, res) => {
     }),
     headers: {
       'content-type': 'application/x-www-form-urlencoded',
+      // eslint-disable-next-line new-cap
       Authorization: `Basic ${new Buffer.from(`${clientId}:${clientSecret}`).toString('base64')}`
     }
   });
@@ -68,9 +71,22 @@ router.get('/callback', async (req, res) => {
     req.session.accessToken = response.data.access_token;
   }
 
-  res.redirect(clientRedirectUri);
+  const currentSpotifyUser = await userService.getCurrentUser(req.session.accessToken);
+
+  if (!currentSpotifyUser) {
+    res.status(404).send({ message: 'User not found' });
+    return;
+  }
+
+  const exitingUser = await userService.getUserBySpotifyUserId(currentSpotifyUser.id);
+  if (exitingUser) {
+    res.redirect(`${clientRedirectUri}/explore`);
+    return;
+  }
+  res.redirect(`${clientRedirectUri}/complete`);
 });
 
 export default {
-  router: serverErrorSafe(router)
+  router: serverErrorSafe(router),
+  generateRandomString
 };

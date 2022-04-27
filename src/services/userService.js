@@ -1,3 +1,5 @@
+import axios from 'axios';
+
 import User from '../models/user';
 
 const createUser = async (userData) => {
@@ -18,6 +20,22 @@ const createUser = async (userData) => {
   return user;
 };
 
+const getCurrentUser = async (accessToken) => {
+  const user = await axios.get('https://api.spotify.com/v1/me', {
+    headers: { Authorization: `Bearer ${accessToken}` }
+  });
+
+  return user;
+};
+
+const getUserBySpotifyUserId = async (spotifyUserId) => {
+  const user = await User.where({ spotifyUserId });
+
+  return user;
+};
+
 export default {
-  createUser
+  createUser,
+  getCurrentUser,
+  getUserBySpotifyUserId
 };
