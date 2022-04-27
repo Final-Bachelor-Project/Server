@@ -69,7 +69,7 @@ router.get('/callback', async (req, res) => {
     req.session.accessToken = response.data.access_token;
   }
 
-  res.redirect('clientRedirectUri');
+  res.redirect(clientRedirectUri);
 });
 
 export default {
