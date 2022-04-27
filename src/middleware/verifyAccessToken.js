@@ -2,7 +2,9 @@ const verifyAccessToken = async (req, res, next) => {
   const { accessToken } = req.session;
 
   if (accessToken) {
+    console.log(accessToken);
     next();
+    return;
   }
   res.status(401).send({ message: 'You are not authorized to make this request. Invalid access token.' });
 };
