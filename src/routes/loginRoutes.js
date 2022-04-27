@@ -3,7 +3,6 @@ import config from 'config';
 import querystring from 'query-string';
 import axios from 'axios';
 
-import session from 'express-session';
 import serverErrorSafe from '../utils/serverErrorSafe';
 
 const router = express.Router();
