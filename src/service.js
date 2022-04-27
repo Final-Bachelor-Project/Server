@@ -2,6 +2,7 @@ import express from 'express';
 import config from 'config';
 import bodyparser from 'body-parser';
 import cors from 'cors';
+import session from 'express-session';
 
 import databaseService from './services/databaseService';
 import userRouter from './routes/userRoutes';
@@ -15,6 +16,13 @@ const start = async () => {
   app.use(bodyparser.urlencoded({ extended: false }));
   app.use(express.static('public'));
   app.use(cors());
+
+  // Setting up the session
+  app.use(session({
+    secret: config.get('secret'),
+    resave: false,
+    saveUninitialized: true
+  }));
 
   // Database connection
   await databaseService.connect();

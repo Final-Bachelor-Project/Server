@@ -3,6 +3,7 @@ import config from 'config';
 import querystring from 'query-string';
 import axios from 'axios';
 
+import session from 'express-session';
 import serverErrorSafe from '../utils/serverErrorSafe';
 
 const router = express.Router();
@@ -48,7 +49,7 @@ router.get('/', (req, res) => {
 });
 
 router.get('/callback', async (req, res) => {
-  const code = req.query.code;
+  const { code } = req.query;
 
   const response = await axios({
     method: 'post',
@@ -60,32 +61,15 @@ router.get('/callback', async (req, res) => {
     }),
     headers: {
       'content-type': 'application/x-www-form-urlencoded',
-      Authorization: `Basic ${new Buffer.from(`${clientId}:${clientSecret}`).toString('base64')}`,
-    },
-  })
+      Authorization: `Basic ${new Buffer.from(`${clientId}:${clientSecret}`).toString('base64')}`
+    }
+  });
 
-  const { access_token, token_type } = response.data;
+  if (response.data.access_token) {
+    req.session.accessToken = response.data.access_token;
+  }
 
-  console.log(access_token)
-
-//   const query = querystring.stringify(response.data, null, 2)
-//   console.log(query);
-//   res.redirect(`${clientRedirectUri}?${query}`)
- 
-  //console.log(JSON.stringify(response.data, null, 2))
-//   await fetch('https://accounts.spotify.com/api/token', {
-//     method: 'POST',
-//     headers: {
-//       'Content-Type': 'application/x-www-form-urlencoded',
-//       Accept: 'application/json'
-//     },
-//     body: encodeFormData(body)
-//   })
-//     .then((response) => response.json())
-//     .then((data) => {
-//       const query = querystring.stringify(data);
-//       res.redirect(`${clientRedirectUri}?${query}`);
-//     });
+  res.redirect('clientRedirectUri');
 });
 
 export default {
