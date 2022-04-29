@@ -1,0 +1,11 @@
+{
+    "testRegex": "/tests/.*.spec.(js)?$",
+    "collectCoverage": true,
+    "collectCoverageFrom": [
+        "**/*.{js,jsx}",
+        "!**/node_modules/**"
+      ],
+    "globals": {
+      "setupFiles": "./config/template.json"
+    }
+}

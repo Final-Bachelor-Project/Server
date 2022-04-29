@@ -1,0 +1,77 @@
+{
+  "name": "server",
+  "version": "1.0.0",
+  "description": "",
+  "main": "app.js",
+  "scripts": {
+    "start": "node src/app.js",
+    "dev": "nodemon --exec babel-node src/app.js",
+    "lint": "eslint ./src",
+    "test": "jest --config ./jest.config.json"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Final-Bachelor-Project/Server.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Final-Bachelor-Project/Server/issues"
+  },
+  "homepage": "https://github.com/Final-Bachelor-Project/Server#readme",
+  "dependencies": {
+    "axios": "^0.26.1",
+    "body-parser": "^1.19.2",
+    "config": "^3.3.7",
+    "cors": "^2.8.5",
+    "express": "^4.17.3",
+    "express-session": "^1.17.2",
+    "fetch": "^1.1.0",
+    "mongoose": "^6.3.1",
+    "query-string": "^7.1.1",
+    "regenerator-runtime": "^0.13.9",
+    "smacker": "^1.0.5"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.17.9",
+    "@babel/node": "^7.16.8",
+    "@babel/preset-env": "^7.16.11",
+    "eslint": "^8.14.0",
+    "eslint-config-airbnb": "^19.0.4",
+    "eslint-plugin-import": "^2.26.0",
+    "jest": "^27.5.1",
+    "nodemon": "^2.0.15"
+  },
+  "eslintConfig": {
+    "extends": "airbnb-base",
+    "env": {
+      "es6": true,
+      "browser": true
+    },
+    "rules": {
+      "brace-style": [
+        "error",
+        "stroustrup"
+      ],
+      "comma-dangle": [
+        "error",
+        "never"
+      ],
+      "no-unused-vars": [
+        "error"
+      ],
+      "no-var": [
+        "error"
+      ],
+      "one-var": [
+        "off"
+      ],
+      "no-const-assign": [
+        "error"
+      ],
+      "quotes": [
+        "error"
+      ]
+    }
+  }
+}
