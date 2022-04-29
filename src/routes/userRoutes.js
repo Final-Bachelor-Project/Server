@@ -17,7 +17,7 @@ router.post('/', async (req, res) => {
   res.status(500).send({ message: 'Could not create user' });
 });
 
-// Get user data from Spotify API
+// Get current user data from Spotify API
 router.get('/current', async (req, res) => {
   const { accessToken } = req.session;
   const user = await axios.get('https://api.spotify.com/v1/me', {
@@ -31,17 +31,22 @@ router.get('/current', async (req, res) => {
   res.status(404).send({ message: 'User not found' });
 });
 
-// Get users profile
+// Get users Spotify profiles
 router.get('/', async (req, res) => {
-  const { accessToken } = req.session;
-
-  const users = await userService.getAllUsers(accessToken);
+  const users = await userService.getAllUsers();
   if (users) {
     res.status(200).send(users);
     return;
   }
   res.status(404).send('No users found');
 });
+
+// // Get user by id
+// router.get('/:id', async (req, res) => {
+//   const id =
+//   const user = await userService.getUserById()
+
+// });
 
 export default {
   router: serverErrorSafe(router)

@@ -1,4 +1,5 @@
 import axios from 'axios';
+import mongoose from 'mongoose';
 
 import User from '../models/user';
 
@@ -33,6 +34,7 @@ const getUserBySpotifyUserId = async (spotifyUserId) => {
   return user;
 };
 
+// eslint-disable-next-line no-unused-vars
 const getUserProfile = async (spotifyUserId, accessToken) => {
   const user = await axios.get(`https://api.spotify.com/v1/users/${spotifyUserId}`, {
     headers: { Authorization: `Bearer ${accessToken}` }
@@ -41,23 +43,25 @@ const getUserProfile = async (spotifyUserId, accessToken) => {
   return user.data;
 };
 
-const getAllUsers = async (accessToken) => {
+const getAllUsers = async () => {
   const users = await User.find();
   if (users.length === 0) {
     return null;
   }
+  return users;
+};
 
-  const usersProfile = await Promise.all(users.map(async (user) => {
-    const profile = await getUserProfile(user.spotifyUserId, accessToken);
-    return profile;
-  }));
+const getUserById = async (id) => {
+  const oId = mongoose.Types.ObjectId(id);
+  const user = await User.findById({ _id: oId });
 
-  return usersProfile;
+  return user;
 };
 
 export default {
   createUser,
   getCurrentUser,
   getUserBySpotifyUserId,
-  getAllUsers
+  getAllUsers,
+  getUserById
 };
