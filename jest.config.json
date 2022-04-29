@@ -4,5 +4,8 @@
     "collectCoverageFrom": [
         "**/*.{js,jsx}",
         "!**/node_modules/**"
-      ]
+      ],
+    "lobals": {
+      "APP_CONFIG": "./config/template.json"
+    }
 }
