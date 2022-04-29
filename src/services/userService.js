@@ -33,8 +33,31 @@ const getUserBySpotifyUserId = async (spotifyUserId) => {
   return user;
 };
 
+const getUserProfile = async (spotifyUserId, accessToken) => {
+  const user = await axios.get(`https://api.spotify.com/v1/users/${spotifyUserId}`, {
+    headers: { Authorization: `Bearer ${accessToken}` }
+  });
+
+  return user.data;
+};
+
+const getAllUsers = async (accessToken) => {
+  const users = await User.find();
+  if (users.length === 0) {
+    return null;
+  }
+
+  const usersProfile = await Promise.all(users.map(async (user) => {
+    const profile = await getUserProfile(user.spotifyUserId, accessToken);
+    return profile;
+  }));
+
+  return usersProfile;
+};
+
 export default {
   createUser,
   getCurrentUser,
-  getUserBySpotifyUserId
+  getUserBySpotifyUserId,
+  getAllUsers
 };

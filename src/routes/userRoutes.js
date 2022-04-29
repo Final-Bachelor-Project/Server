@@ -31,6 +31,18 @@ router.get('/current', async (req, res) => {
   res.status(404).send({ message: 'User not found' });
 });
 
+// Get users profile
+router.get('/', async (req, res) => {
+  const { accessToken } = req.session;
+
+  const users = await userService.getAllUsers(accessToken);
+  if (users) {
+    res.status(200).send(users);
+    return;
+  }
+  res.status(404).send('No users found');
+});
+
 export default {
   router: serverErrorSafe(router)
 };
