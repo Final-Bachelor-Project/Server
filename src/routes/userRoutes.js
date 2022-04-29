@@ -8,9 +8,24 @@ const router = express.Router();
 
 // Create user
 router.post('/', async (req, res) => {
-  const user = await userService.createUser(req.body);
+  const {
+    spotifyUserId, username, firstName, lastName, profileImage, country, city, bio, dateOfBirth
+  } = req.body;
+
+  const user = await userService.createUser(
+    spotifyUserId,
+    username,
+    firstName,
+    lastName,
+    profileImage,
+    country,
+    city,
+    bio,
+    dateOfBirth
+  );
 
   if (user) {
+    req.session.loggedInUser = user.id;
     res.status(200).send({ message: 'Successfully created user' });
     return;
   }
@@ -33,7 +48,8 @@ router.get('/current', async (req, res) => {
 
 // Get all users
 router.get('/', async (req, res) => {
-  const users = await userService.getAllUsers();
+  const { loggedInUser } = req.session;
+  const users = await userService.getAllUsers(loggedInUser);
   if (users) {
     res.status(200).send(users);
     return;

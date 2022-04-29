@@ -4,17 +4,18 @@ import mongoose from 'mongoose';
 import User from '../models/user';
 
 // Create user
-const createUser = async (userData) => {
+// eslint-disable-next-line max-len
+const createUser = async (spotifyUserId, username, firstName, lastName, profileImage, country, city, bio, dateOfBirth) => {
   const user = await new User({
-    spotifyUserId: userData.spotifyUserId,
-    username: userData.username,
-    firstName: userData.firstName,
-    lastName: userData.lastName,
-    profileImage: userData.profileImage,
-    country: userData.country,
-    city: userData.city,
-    bio: userData.bio,
-    dateOfBirth: userData.dateOfBirth,
+    spotifyUserId,
+    username,
+    firstName,
+    lastName,
+    profileImage,
+    country,
+    city,
+    bio,
+    dateOfBirth,
     connections: [],
     createdAt: Date.now()
   }).save();
@@ -47,9 +48,11 @@ const getUserProfile = async (spotifyUserId, accessToken) => {
   return user.data;
 };
 
-// Get all registered users
-const getAllUsers = async () => {
-  const users = await User.find();
+// Get all registered users except the logged in one
+const getAllUsers = async (loggedInUser) => {
+  const oId = mongoose.Types.ObjectId(loggedInUser.id);
+  const users = await User.find({ _id: { $ne: oId } });
+
   if (users.length === 0) {
     return null;
   }

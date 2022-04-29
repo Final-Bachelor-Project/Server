@@ -79,6 +79,7 @@ router.get('/callback', async (req, res) => {
 
   const existingUser = await userService.getUserBySpotifyUserId(currentSpotifyUser.data.id);
   if (existingUser) {
+    req.session.loggedInUser = existingUser;
     res.redirect(`${clientRedirectUri}/explore`);
     return;
   }
