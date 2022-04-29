@@ -50,7 +50,8 @@ const getUserProfile = async (spotifyUserId, accessToken) => {
 
 // Get all registered users except the logged in one
 const getAllUsers = async (loggedInUser) => {
-  const oId = mongoose.Types.ObjectId(loggedInUser.id);
+  // eslint-disable-next-line no-underscore-dangle
+  const oId = mongoose.Types.ObjectId(loggedInUser._id);
   const users = await User.find({ _id: { $ne: oId } });
 
   if (users.length === 0) {
