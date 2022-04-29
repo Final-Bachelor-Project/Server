@@ -5,7 +5,7 @@
         "**/*.{js,jsx}",
         "!**/node_modules/**"
       ],
-    "lobals": {
+    "globals": {
       "APP_CONFIG": "./config/template.json"
     }
 }
