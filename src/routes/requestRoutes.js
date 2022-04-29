@@ -32,6 +32,19 @@ router.put('/:id', async (req, res) => {
   res.status(409).send({ message: 'Wrong status' });
 });
 
+// Get user pending requests
+router.get('/', async (req, res) => {
+  // eslint-disable-next-line no-underscore-dangle
+  const { loggedInUserId } = req.session.loggedInUser._id;
+  const requests = await requestService.getUserPendingRequests(loggedInUserId);
+
+  if (requests) {
+    res.status(200).send(requests);
+    return;
+  }
+  res.status(404).send({ message: 'No pending requests found' });
+});
+
 export default {
   router: serverErrorSafe(router)
 };

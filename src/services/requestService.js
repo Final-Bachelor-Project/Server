@@ -25,7 +25,19 @@ const confirmOrDeclineRequest = async (id, status) => {
   return null;
 };
 
+// Get user pending requests
+const getUserPendingRequests = async (loggedInUserId) => {
+  const oId = mongoose.Types.ObjectId(loggedInUserId);
+
+  const requests = await Request.find({ receiverId: oId, status: 'pending' });
+  if (requests.length === 0) {
+    return null;
+  }
+  return requests;
+};
+
 export default {
   createRequest,
-  confirmOrDeclineRequest
+  confirmOrDeclineRequest,
+  getUserPendingRequests
 };

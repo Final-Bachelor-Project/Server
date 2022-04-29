@@ -66,7 +66,6 @@ router.get('/:id', async (req, res) => {
     res.status(200).send(user);
     return;
   }
-
   res.status(404).send({ message: `No user found with the id ${id}` });
 });
 
