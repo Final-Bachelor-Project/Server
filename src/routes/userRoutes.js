@@ -38,15 +38,21 @@ router.get('/', async (req, res) => {
     res.status(200).send(users);
     return;
   }
-  res.status(404).send('No users found');
+  res.status(404).send({ message: 'No users found' });
 });
 
-// // Get user by id
-// router.get('/:id', async (req, res) => {
-//   const id =
-//   const user = await userService.getUserById()
+// Get user by id
+router.get('/:id', async (req, res) => {
+  const { id } = req.params;
+  const user = await userService.getUserById(id);
 
-// });
+  if (user) {
+    res.status(200).send(user);
+    return;
+  }
+
+  res.status(404).send({ message: `No user found with the id ${id}` });
+});
 
 export default {
   router: serverErrorSafe(router)
