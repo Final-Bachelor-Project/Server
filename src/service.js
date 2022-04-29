@@ -7,6 +7,7 @@ import session from 'express-session';
 import databaseService from './services/databaseService';
 import userRouter from './routes/userRoutes';
 import loginRouter from './routes/loginRoutes';
+import requestRouter from './routes/requestRoutes';
 import verifyAccessToken from './middleware/verifyAccessToken';
 
 let service;
@@ -30,6 +31,7 @@ const start = async () => {
 
   // Routes
   app.use('/api/users', verifyAccessToken, userRouter.router);
+  app.use('/api/requests', verifyAccessToken, requestRouter.router);
   app.use('/api/login', loginRouter.router);
 
   // Start server
