@@ -29,8 +29,7 @@ const getCurrentUser = async (accessToken) => {
 };
 
 const getUserBySpotifyUserId = async (spotifyUserId) => {
-  const user = await User.where({ spotifyUserId });
-
+  const user = await User.findOne({ spotifyUserId });
   return user;
 };
 

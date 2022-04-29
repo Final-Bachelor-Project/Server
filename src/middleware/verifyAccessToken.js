@@ -2,7 +2,6 @@ const verifyAccessToken = async (req, res, next) => {
   const { accessToken } = req.session;
 
   if (accessToken) {
-    console.log(accessToken);
     next();
     return;
   }

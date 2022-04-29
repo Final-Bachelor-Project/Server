@@ -72,14 +72,13 @@ router.get('/callback', async (req, res) => {
   }
 
   const currentSpotifyUser = await userService.getCurrentUser(req.session.accessToken);
-
   if (!currentSpotifyUser) {
     res.status(404).send({ message: 'User not found' });
     return;
   }
 
-  const exitingUser = await userService.getUserBySpotifyUserId(currentSpotifyUser.id);
-  if (exitingUser) {
+  const existingUser = await userService.getUserBySpotifyUserId(currentSpotifyUser.data.id);
+  if (existingUser) {
     res.redirect(`${clientRedirectUri}/explore`);
     return;
   }
