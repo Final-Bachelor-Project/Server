@@ -3,6 +3,7 @@ import config from 'config';
 import querystring from 'query-string';
 import axios from 'axios';
 
+import userService from '../services/userService';
 import serverErrorSafe from '../utils/serverErrorSafe';
 
 const router = express.Router();
@@ -15,6 +16,7 @@ const clientSecret = config.get('clientSecret');
 const generateRandomString = (length) => {
   let text = '';
   const possible = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+  // eslint-disable-next-line no-plusplus
   for (let i = 0; i < length; i++) {
     text += possible.charAt(Math.floor(Math.random() * possible.length));
   }
@@ -48,7 +50,7 @@ router.get('/', (req, res) => {
 });
 
 router.get('/callback', async (req, res) => {
-  const code = req.query.code;
+  const { code } = req.query;
 
   const response = await axios({
     method: 'post',
@@ -60,34 +62,30 @@ router.get('/callback', async (req, res) => {
     }),
     headers: {
       'content-type': 'application/x-www-form-urlencoded',
-      Authorization: `Basic ${new Buffer.from(`${clientId}:${clientSecret}`).toString('base64')}`,
-    },
-  })
+      // eslint-disable-next-line new-cap
+      Authorization: `Basic ${new Buffer.from(`${clientId}:${clientSecret}`).toString('base64')}`
+    }
+  });
 
-  const { access_token, token_type } = response.data;
+  if (response.data.access_token) {
+    req.session.accessToken = response.data.access_token;
+  }
 
-  console.log(access_token)
+  const currentSpotifyUser = await userService.getCurrentUser(req.session.accessToken);
+  if (!currentSpotifyUser) {
+    res.status(404).send({ message: 'User not found' });
+    return;
+  }
 
-//   const query = querystring.stringify(response.data, null, 2)
-//   console.log(query);
-//   res.redirect(`${clientRedirectUri}?${query}`)
- 
-  //console.log(JSON.stringify(response.data, null, 2))
-//   await fetch('https://accounts.spotify.com/api/token', {
-//     method: 'POST',
-//     headers: {
-//       'Content-Type': 'application/x-www-form-urlencoded',
-//       Accept: 'application/json'
-//     },
-//     body: encodeFormData(body)
-//   })
-//     .then((response) => response.json())
-//     .then((data) => {
-//       const query = querystring.stringify(data);
-//       res.redirect(`${clientRedirectUri}?${query}`);
-//     });
+  const existingUser = await userService.getUserBySpotifyUserId(currentSpotifyUser.data.id);
+  if (existingUser) {
+    res.redirect(`${clientRedirectUri}/explore`);
+    return;
+  }
+  res.redirect(`${clientRedirectUri}/complete`);
 });
 
 export default {
-  router: serverErrorSafe(router)
+  router: serverErrorSafe(router),
+  generateRandomString
 };

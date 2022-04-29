@@ -1,21 +1,40 @@
+import axios from 'axios';
+
 import User from '../models/user';
 
-const createUser = async () => {
-   const user = await new User({
-       spotifyUserId: "1234567",
-       email: "user@email.com",
-       name: "username",
-       coonection: [],
-       profileImage: "https:kslwaæ",
-       country: "Denmark",
-       city: "Copenhagen",
-       bio: "Description",
-       createdAt: Date.now()
-   }).save();
+const createUser = async (userData) => {
+  const user = await new User({
+    spotifyUserId: userData.spotifyUserId,
+    username: userData.username,
+    firstName: userData.firstName,
+    lastName: userData.lastName,
+    profileImage: userData.profileImage,
+    country: userData.country,
+    city: userData.city,
+    bio: userData.bio,
+    dateOfBirth: userData.dateOfBirth,
+    connections: [],
+    createdAt: Date.now()
+  }).save();
 
-   return user;
-}
+  return user;
+};
+
+const getCurrentUser = async (accessToken) => {
+  const user = await axios.get('https://api.spotify.com/v1/me', {
+    headers: { Authorization: `Bearer ${accessToken}` }
+  });
+
+  return user;
+};
+
+const getUserBySpotifyUserId = async (spotifyUserId) => {
+  const user = await User.findOne({ spotifyUserId });
+  return user;
+};
 
 export default {
-    createUser: createUser
-}
+  createUser,
+  getCurrentUser,
+  getUserBySpotifyUserId
+};

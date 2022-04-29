@@ -2,10 +2,12 @@ import express from 'express';
 import config from 'config';
 import bodyparser from 'body-parser';
 import cors from 'cors';
+import session from 'express-session';
 
 import databaseService from './services/databaseService';
 import userRouter from './routes/userRoutes';
 import loginRouter from './routes/loginRoutes';
+import verifyAccessToken from './middleware/verifyAccessToken';
 
 let service;
 const start = async () => {
@@ -16,11 +18,18 @@ const start = async () => {
   app.use(express.static('public'));
   app.use(cors());
 
+  // Setting up the session
+  app.use(session({
+    secret: config.get('secret'),
+    resave: false,
+    saveUninitialized: true
+  }));
+
   // Database connection
   await databaseService.connect();
 
   // Routes
-  app.use('/api/users', userRouter.router);
+  app.use('/api/users', verifyAccessToken, userRouter.router);
   app.use('/api/login', loginRouter.router);
 
   // Start server
