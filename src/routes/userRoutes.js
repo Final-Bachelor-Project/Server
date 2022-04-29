@@ -25,7 +25,7 @@ router.post('/', async (req, res) => {
   );
 
   if (user) {
-    req.session.loggedInUser = user.id;
+    req.session.loggedInUser = user;
     res.status(200).send({ message: 'Successfully created user' });
     return;
   }

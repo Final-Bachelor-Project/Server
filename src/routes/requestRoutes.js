@@ -7,7 +7,9 @@ const router = express.Router();
 
 // Create request
 router.post('/', async (req, res) => {
-  const { senderId, receiverId } = req.body;
+  const { receiverId } = req.body;
+  // eslint-disable-next-line no-underscore-dangle
+  const { senderId } = req.session.loggedInUser._id;
   const request = await requestService.createRequest(senderId, receiverId);
 
   if (request) {
