@@ -31,7 +31,7 @@ router.get('/current', async (req, res) => {
   res.status(404).send({ message: 'User not found' });
 });
 
-// Get users Spotify profiles
+// Get all users
 router.get('/', async (req, res) => {
   const users = await userService.getAllUsers();
   if (users) {
