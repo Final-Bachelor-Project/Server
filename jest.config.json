@@ -6,6 +6,6 @@
         "!**/node_modules/**"
       ],
     "globals": {
-      "APP_CONFIG": "./config/template.json"
+      "setupFiles": "./config/template.json"
     }
 }
