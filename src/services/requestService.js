@@ -35,7 +35,7 @@ const getUserPendingRequests = async (loggedInUserId) => {
     return null;
   }
 
-  const requestsWithUser = requests.map(async (request) => {
+  const requestsWithUser = await Promise.all(requests.map(async (request) => {
     const { senderId } = request;
     const user = await userService.getUserById(senderId);
 
@@ -43,7 +43,7 @@ const getUserPendingRequests = async (loggedInUserId) => {
       request,
       user
     };
-  });
+  }));
 
   return requestsWithUser;
 };
