@@ -1,6 +1,7 @@
 import mongoose from 'mongoose';
 
 import Request from '../models/request';
+import userService from './userService';
 
 // Create request
 const createRequest = async (senderId, receiverId) => {
@@ -33,7 +34,18 @@ const getUserPendingRequests = async (loggedInUserId) => {
   if (requests.length === 0) {
     return null;
   }
-  return requests;
+
+  const requestsWithUser = requests.map(async (request) => {
+    const { senderId } = request;
+    const user = await userService.getUserById(senderId);
+
+    return {
+      request,
+      user
+    };
+  });
+
+  return requestsWithUser;
 };
 
 export default {
