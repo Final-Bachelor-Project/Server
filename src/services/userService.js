@@ -60,7 +60,7 @@ const getAllUsers = async (loggedInUser) => {
   if (users.length > 0) {
     await Promise.all(
       users.map(async (user) => {
-        if (!await requestService.checkIfUserHasRequests(user._id)) {
+        if (!await requestService.checkIfUserHasRequests(user._id, loggedInUser._id)) {
           usersList.push(user);
         }
       })

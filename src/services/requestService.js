@@ -49,8 +49,14 @@ const getUserPendingRequests = async (loggedInUserId) => {
   return requestsWithUser;
 };
 
-const checkIfUserHasRequests = async (userId) => {
-  const requests = await Request.find({ $or: [{ senderId: userId }, { receiverId: userId }] });
+const checkIfUserHasRequests = async (userId, loggedInUserId) => {
+  const requests = await Request.find({
+    $or: [{
+      $and: [{ senderId: userId }, { receiverId: loggedInUserId }]
+    },
+    { $and: [{ senderId: loggedInUserId }, { receiverId: userId }] }
+    ]
+  });
 
   if (requests.length > 0) {
     return true;
