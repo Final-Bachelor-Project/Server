@@ -48,8 +48,18 @@ const getUserPendingRequests = async (loggedInUserId) => {
   return requestsWithUser;
 };
 
+const checkIfUserHasRequests = async (userId) => {
+  const requests = await Request.find({ $or: [{ senderId: userId }, { receiverId: userId }] });
+
+  if (requests.length > 0) {
+    return true;
+  }
+  return false;
+};
+
 export default {
   createRequest,
   confirmOrDeclineRequest,
-  getUserPendingRequests
+  getUserPendingRequests,
+  checkIfUserHasRequests
 };

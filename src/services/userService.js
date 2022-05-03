@@ -1,7 +1,10 @@
+/* eslint-disable no-underscore-dangle */
 import axios from 'axios';
+import { request } from 'express';
 import mongoose from 'mongoose';
 
 import User from '../models/user';
+import requestService from './requestService';
 
 // Create user
 // eslint-disable-next-line max-len
@@ -50,14 +53,24 @@ const getUserProfile = async (spotifyUserId, accessToken) => {
 
 // Get all registered users except the logged in one
 const getAllUsers = async (loggedInUser) => {
-  // eslint-disable-next-line no-underscore-dangle
   const oId = mongoose.Types.ObjectId(loggedInUser._id);
   const users = await User.find({ _id: { $ne: oId } });
 
-  if (users.length === 0) {
+  const usersList = [];
+  if (users.length > 0) {
+    await Promise.all(
+      users.map(async (user) => {
+        if (await requestService.checkIfUserHasRequests(user._id)) {
+          usersList.push(user);
+        }
+      })
+    );
+  }
+
+  if (usersList.length === 0) {
     return null;
   }
-  return users;
+  return usersList;
 };
 
 // Get user by id
