@@ -1,4 +1,8 @@
 const verifyAccessToken = async (req, res, next) => {
+  // Allows to user postman
+  if (req.headers.session) {
+    req.session.accessToken = req.headers.session;
+  }
   const { accessToken } = req.session;
 
   if (accessToken) {
