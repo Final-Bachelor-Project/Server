@@ -9,7 +9,7 @@ const router = express.Router();
 router.post('/', async (req, res) => {
   const { receiverId } = req.body;
   // eslint-disable-next-line no-underscore-dangle
-  const { senderId } = req.session.loggedInUser._id;
+  const senderId = req.session.loggedInUser._id;
   const request = await requestService.createRequest(senderId, receiverId);
 
   if (request) {
@@ -35,7 +35,7 @@ router.put('/:id', async (req, res) => {
 // Get user pending requests
 router.get('/', async (req, res) => {
   // eslint-disable-next-line no-underscore-dangle
-  const { loggedInUserId } = req.session.loggedInUser._id;
+  const loggedInUserId = req.session.loggedInUser._id;
   const requests = await requestService.getUserPendingRequests(loggedInUserId);
 
   if (requests) {
