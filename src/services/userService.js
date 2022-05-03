@@ -1,6 +1,6 @@
+/* eslint-disable import/no-cycle */
 /* eslint-disable no-underscore-dangle */
 import axios from 'axios';
-import { request } from 'express';
 import mongoose from 'mongoose';
 
 import User from '../models/user';
