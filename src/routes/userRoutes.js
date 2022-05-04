@@ -12,7 +12,9 @@ router.post('/', async (req, res) => {
   const {
     spotifyUserId, username, firstName, lastName, profileImage, country, city, bio, dateOfBirth
   } = req.body;
+  const { accessToken } = req.session;
 
+  const tracks = await userService.getUserSpotifyTracks(accessToken);
   const user = await userService.createUser(
     spotifyUserId,
     username,
@@ -22,12 +24,12 @@ router.post('/', async (req, res) => {
     country,
     city,
     bio,
-    dateOfBirth
+    dateOfBirth,
+    tracks
   );
 
   if (user) {
     req.session.loggedInUser = user;
-    await userService.saveUserTopTracks(req.session.accessToken, user.id);
     res.status(200).send({ message: 'Successfully created user' });
     return;
   }
