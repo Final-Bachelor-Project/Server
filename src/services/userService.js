@@ -122,7 +122,7 @@ const saveUserTopTracks = async (accessToken, id) => {
   }
 
   const topTracks = await Promise.all(
-    tracks.map(async (track) => {
+    tracks.data.map(async (track) => {
       const artists = tracks.artists.map((artist) => artist.name);
       return {
         name: track.name,
