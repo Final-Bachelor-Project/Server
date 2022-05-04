@@ -100,9 +100,10 @@ router.delete('/current/connections/:id', async (req, res) => {
   res.status(200).send({ message: 'Connection removed' });
 });
 
-// Get user top tracks
-router.get('/tracks', async (req, res) => {
-  const tracks = await userService.getUserTopTracks();
+// Get current user top tracks
+router.get('/current/tracks', async (req, res) => {
+  const { accessToken } = req.session;
+  const tracks = await userService.getUserTopTracks(accessToken);
 
   res.status(200).send(tracks);
 });
