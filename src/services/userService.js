@@ -86,20 +86,17 @@ const createConnection = async (firstUserId, secondUserId) => {
   const firstUserOId = mongoose.Types.ObjectId(firstUserId);
   const secondUserOId = mongoose.Types.ObjectId(secondUserId);
 
-  const firstConnection = await User.updateOne(
-    { _id: firstUserOId },
-    { $push: { connections: secondUserOId } }
-  );
-  const secondConnection = await User.updateOne(
-    { _id: secondUserOId },
-    { $push: { connections: firstUserOId } }
-  );
+  await User.updateOne({ _id: firstUserOId }, { $push: { connections: secondUserOId } });
+  await User.updateOne({ _id: secondUserOId }, { $push: { connections: firstUserOId } });
+};
 
-  if (firstConnection && secondConnection) {
-    return true;
-  }
+// Remove connection between users
+const removeConnection = async (firstUserId, secondUserId) => {
+  const firstUserOId = mongoose.Types.ObjectId(firstUserId);
+  const secondUserOId = mongoose.Types.ObjectId(secondUserId);
 
-  return false;
+  await User.updateOne({ _id: firstUserOId }, { $pullAll: { connections: secondUserOId } });
+  await User.updateOne({ _id: secondUserOId }, { $pullAll: { connections: firstUserOId } });
 };
 
 export default {
@@ -108,5 +105,6 @@ export default {
   getUserBySpotifyUserId,
   getAllUsers,
   getUserById,
-  createConnection
+  createConnection,
+  removeConnection
 };

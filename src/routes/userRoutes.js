@@ -72,8 +72,8 @@ router.get('/:id', async (req, res) => {
 
 // Get current user connections
 router.get('/current/connections', async (req, res) => {
-  const { id } = req.params;
-  const user = await userService.getUserById(id);
+  const loggedInUserId = req.session.loggedInUser._id;
+  const user = await userService.getUserById(loggedInUserId);
 
   if (!user) {
     res.status(404).send({ message: 'No user found' });
@@ -87,6 +87,15 @@ router.get('/current/connections', async (req, res) => {
   }
 
   res.status(200).send(connections);
+});
+
+router.delete('/current/connections/:id', async (req, res) => {
+  const connectionId = req.params.id;
+  const loggedInUserId = req.session.loggedInUser._id;
+
+  await userService.removeConnection(loggedInUserId, connectionId);
+
+  res.status(200).send({ message: 'Connection removed' });
 });
 
 export default {
