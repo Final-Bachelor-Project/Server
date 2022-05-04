@@ -81,7 +81,10 @@ router.get('/callback', async (req, res) => {
   const existingUser = await userService.getUserBySpotifyUserId(currentSpotifyUser.data.id);
   if (existingUser) {
     req.session.loggedInUser = existingUser;
+
     await userService.saveUserTopTracks(req.session.accessToken, existingUser._id);
+    await userService.saveUserTopArtists(req.session.accessToken, existingUser._id);
+
     res.redirect(`${clientRedirectUri}/explore`);
     return;
   }

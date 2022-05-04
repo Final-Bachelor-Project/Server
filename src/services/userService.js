@@ -119,12 +119,13 @@ const getUserSpotifyTracks = async (accessToken) => {
     return null;
   }
 
-  const topTracks = tracks.data.items.map(async (track) => {
+  const topTracks = tracks.data.items.map((track) => {
     const artists = track.artists.map((artist) => artist.name);
     return {
       name: track.name,
       artists,
-      id: track.id
+      id: track.id,
+      image: track.images[0].url
     };
   });
 
@@ -134,8 +135,35 @@ const getUserSpotifyTracks = async (accessToken) => {
 // Save user top tracks
 const saveUserTopTracks = async (accessToken, id) => {
   const oId = mongoose.Types.ObjectId(id);
-  const tracks = await getUserSpotifyTracks(accessToken, id);
+  const tracks = await getUserSpotifyTracks(accessToken);
   await User.updateOne({ _id: oId }, { tracks });
+};
+
+// Get user spotify artists data
+const getUserSpotifyArtists = async (accessToken) => {
+  const artists = await axios.get('https://api.spotify.com/v1/me/top/artists', {
+    headers: { Authorization: `Bearer ${accessToken}` }
+  });
+
+  if (artists.data.items.length === 0) {
+    return null;
+  }
+
+  const topArtists = artists.data.items.map((artist) => ({
+    name: artist.name,
+    genres: artist.genres,
+    id: artist.id,
+    image: artist.images[0].url
+  }));
+
+  return topArtists;
+};
+
+// Save user top artists
+const saveUserTopArtists = async (accessToken, id) => {
+  const oId = mongoose.Types.ObjectId(id);
+  const artists = await getUserSpotifyArtists(accessToken);
+  await User.updateOne({ _id: oId }, { artists });
 };
 
 export default {
@@ -148,5 +176,7 @@ export default {
   removeConnection,
   getUserConnections,
   saveUserTopTracks,
-  getUserSpotifyTracks
+  getUserSpotifyTracks,
+  saveUserTopArtists,
+  getUserSpotifyArtists
 };

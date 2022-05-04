@@ -15,6 +15,7 @@ router.post('/', async (req, res) => {
   const { accessToken } = req.session;
 
   const tracks = await userService.getUserSpotifyTracks(accessToken);
+  const artists = await userService.getUserSpotifyArtists(accessToken);
   const user = await userService.createUser(
     spotifyUserId,
     username,
@@ -25,7 +26,8 @@ router.post('/', async (req, res) => {
     city,
     bio,
     dateOfBirth,
-    tracks
+    tracks,
+    artists
   );
 
   if (user) {

@@ -41,6 +41,10 @@ const userSchema = mongoose.Schema({
     type: [Object],
     required: true
   },
+  artists: {
+    type: [Object],
+    required: true
+  },
   dateOfBirth: {
     type: String,
     required: true
