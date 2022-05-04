@@ -2,6 +2,7 @@
 import mongoose from 'mongoose';
 
 import Request from '../models/request';
+import user from '../models/user';
 import userService from './userService';
 
 // Create request
@@ -22,6 +23,10 @@ const confirmOrDeclineRequest = async (id, status) => {
 
   if (status === 'accepted' || status === 'rejected') {
     const request = await Request.findOneAndUpdate({ _id: oId }, { status });
+
+    if (status === 'accepted') {
+      await userService.createConnection(request.senderId, request.receiverId);
+    }
     return request;
   }
   return null;

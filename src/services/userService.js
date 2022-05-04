@@ -81,10 +81,31 @@ const getUserById = async (id) => {
   return user;
 };
 
+const createConnection = async (firstUserId, secondUserId) => {
+  const firstUserOId = mongoose.Types.ObjectId(firstUserId);
+  const secondUserOId = mongoose.Types.ObjectId(secondUserId);
+
+  const firstConnection = await User.updateOne(
+    { _id: firstUserOId },
+    { $push: { connections: firstUserOId } }
+  );
+  const secondConnection = await User.updateOne(
+    { _id: secondUserOId },
+    { $push: { connections: secondUserOId } }
+  );
+
+  if (firstConnection && secondConnection) {
+    return true;
+  }
+
+  return false;
+};
+
 export default {
   createUser,
   getCurrentUser,
   getUserBySpotifyUserId,
   getAllUsers,
-  getUserById
+  getUserById,
+  createConnection
 };
