@@ -109,6 +109,15 @@ const getUserConnections = async (connectionsIds) => {
   return connections;
 };
 
+// Get top tracks
+const getTopTracks = async (accessToken) => {
+  const tracks = await axios.get('https://api.spotify.com/v1/me/top/tracks', {
+    headers: { Authorization: `Bearer ${accessToken}` }
+  });
+
+  return tracks;
+};
+
 export default {
   createUser,
   getCurrentUser,
@@ -117,5 +126,6 @@ export default {
   getUserById,
   createConnection,
   removeConnection,
-  getUserConnections
+  getUserConnections,
+  getTopTracks
 };

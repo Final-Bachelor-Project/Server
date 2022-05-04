@@ -100,6 +100,13 @@ router.delete('/current/connections/:id', async (req, res) => {
   res.status(200).send({ message: 'Connection removed' });
 });
 
+// Get user top tracks
+router.get('/tracks', async (req, res) => {
+  const tracks = await userService.getUserTopTracks();
+
+  res.status(200).send(tracks);
+});
+
 export default {
   router: serverErrorSafe(router)
 };
