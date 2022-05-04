@@ -125,7 +125,7 @@ const getUserSpotifyTracks = async (accessToken) => {
       name: track.name,
       artists,
       id: track.id,
-      image: track.images[0].url
+      image: track.album.images[0].url
     };
   });
 
