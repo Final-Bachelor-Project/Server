@@ -90,6 +90,7 @@ router.get('/current/connections', async (req, res) => {
   res.status(200).send(connectionsList);
 });
 
+// Delete connection between users
 router.delete('/current/connections/:id', async (req, res) => {
   const connectionId = req.params.id;
   const loggedInUserId = req.session.loggedInUser._id;
