@@ -86,7 +86,8 @@ router.get('/current/connections', async (req, res) => {
     return;
   }
 
-  res.status(200).send(connections);
+  const connectionsList = await userService.getUserConnections(connections);
+  res.status(200).send(connectionsList);
 });
 
 router.delete('/current/connections/:id', async (req, res) => {

@@ -99,6 +99,16 @@ const removeConnection = async (firstUserId, secondUserId) => {
   await User.updateOne({ _id: secondUserOId }, { $pullAll: { connections: firstUserOId } });
 };
 
+// Get user connections
+const getUserConnections = async (connectionsIds) => {
+  const connections = await Promise.all(connectionsIds.map(async (connectionId) => {
+    const foundUser = await getUserById(connectionId);
+    return foundUser;
+  }));
+
+  return connections;
+};
+
 export default {
   createUser,
   getCurrentUser,
@@ -106,5 +116,6 @@ export default {
   getAllUsers,
   getUserById,
   createConnection,
-  removeConnection
+  removeConnection,
+  getUserConnections
 };
