@@ -119,7 +119,7 @@ const getUserSpotifyTracks = async (accessToken) => {
     return null;
   }
 
-  const topTracks = tracks.data.itemas.map(async (track) => {
+  const topTracks = tracks.data.items.map(async (track) => {
     const artists = track.artists.map((artist) => artist.name);
     return {
       name: track.name,
