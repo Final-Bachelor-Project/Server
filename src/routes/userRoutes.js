@@ -27,6 +27,7 @@ router.post('/', async (req, res) => {
 
   if (user) {
     req.session.loggedInUser = user;
+    await userService.saveUserTopTracks(req.session.accessToken, user.id);
     res.status(200).send({ message: 'Successfully created user' });
     return;
   }
@@ -103,7 +104,7 @@ router.delete('/current/connections/:id', async (req, res) => {
 // Get current user top tracks
 router.get('/current/tracks', async (req, res) => {
   const { accessToken } = req.session;
-  const tracks = await userService.getUserTopTracks(accessToken);
+  const tracks = await userService.getTopTracks(accessToken);
 
   res.status(200).send(tracks);
 });

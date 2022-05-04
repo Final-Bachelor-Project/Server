@@ -109,13 +109,31 @@ const getUserConnections = async (connectionsIds) => {
   return connections;
 };
 
-// Get top tracks
-const getTopTracks = async (accessToken) => {
+// Save top tracks
+const saveUserTopTracks = async (accessToken, id) => {
+  const oId = mongoose.Types.ObjectId(id);
+
   const tracks = await axios.get('https://api.spotify.com/v1/me/top/tracks', {
     headers: { Authorization: `Bearer ${accessToken}` }
   });
 
-  return tracks;
+  if (tracks.data.length === 0) {
+    return null;
+  }
+
+  const topTracks = await Promise.all(
+    tracks.map(async (track) => {
+      const artists = tracks.artists.map((artist) => artist.name);
+      return {
+        name: track.name,
+        artists,
+        id: track.id
+      };
+    })
+  );
+
+  await User.updateOne({ _id: oId }, { topTracks });
+  return true;
 };
 
 export default {
@@ -127,5 +145,5 @@ export default {
   createConnection,
   removeConnection,
   getUserConnections,
-  getTopTracks
+  saveUserTopTracks
 };

@@ -5,6 +5,7 @@ import axios from 'axios';
 
 import userService from '../services/userService';
 import serverErrorSafe from '../utils/serverErrorSafe';
+import user from '../models/user';
 
 const router = express.Router();
 
@@ -80,6 +81,7 @@ router.get('/callback', async (req, res) => {
   const existingUser = await userService.getUserBySpotifyUserId(currentSpotifyUser.data.id);
   if (existingUser) {
     req.session.loggedInUser = existingUser;
+    await userService.saveUserTopTracks(req.session.accessToken, existingUser.id);
     res.redirect(`${clientRedirectUri}/explore`);
     return;
   }
