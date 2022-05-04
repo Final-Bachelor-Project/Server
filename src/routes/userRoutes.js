@@ -70,9 +70,10 @@ router.get('/:id', async (req, res) => {
   res.status(404).send({ message: `No user found with the id ${id}` });
 });
 
-// Get user connections
-router.get('/', async (req, res) => {
-  const user = await userService.getUserById(req.session.loggedInUser._id);
+// Get current user connections
+router.get('/current/connections', async (req, res) => {
+  const { id } = req.params;
+  const user = await userService.getUserById(id);
 
   if (!user) {
     res.status(404).send({ message: 'No user found' });
