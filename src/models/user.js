@@ -37,6 +37,14 @@ const userSchema = mongoose.Schema({
     type: String,
     required: true
   },
+  tracks: {
+    type: [Object],
+    required: true
+  },
+  artists: {
+    type: [Object],
+    required: true
+  },
   dateOfBirth: {
     type: String,
     required: true

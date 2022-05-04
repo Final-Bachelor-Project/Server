@@ -1,3 +1,4 @@
+/* eslint-disable no-underscore-dangle */
 import express from 'express';
 import axios from 'axios';
 
@@ -11,7 +12,10 @@ router.post('/', async (req, res) => {
   const {
     spotifyUserId, username, firstName, lastName, profileImage, country, city, bio, dateOfBirth
   } = req.body;
+  const { accessToken } = req.session;
 
+  const tracks = await userService.getUserSpotifyTracks(accessToken);
+  const artists = await userService.getUserSpotifyArtists(accessToken);
   const user = await userService.createUser(
     spotifyUserId,
     username,
@@ -21,7 +25,9 @@ router.post('/', async (req, res) => {
     country,
     city,
     bio,
-    dateOfBirth
+    dateOfBirth,
+    tracks,
+    artists
   );
 
   if (user) {
@@ -67,6 +73,44 @@ router.get('/:id', async (req, res) => {
     return;
   }
   res.status(404).send({ message: `No user found with the id ${id}` });
+});
+
+// Get current user connections
+router.get('/current/connections', async (req, res) => {
+  const loggedInUserId = req.session.loggedInUser._id;
+  const user = await userService.getUserById(loggedInUserId);
+
+  if (!user) {
+    res.status(404).send({ message: 'No user found' });
+    return;
+  }
+
+  const { connections } = user;
+  if (connections.length === 0) {
+    res.status(404).send({ message: `No connections found for user with id ${user.id}` });
+    return;
+  }
+
+  const connectionsList = await userService.getUserConnections(connections);
+  res.status(200).send(connectionsList);
+});
+
+// Delete connection between users
+router.delete('/current/connections/:id', async (req, res) => {
+  const connectionId = req.params.id;
+  const loggedInUserId = req.session.loggedInUser._id;
+
+  await userService.removeConnection(loggedInUserId, connectionId);
+
+  res.status(200).send({ message: 'Connection removed' });
+});
+
+// Get current user top tracks
+router.get('/current/tracks', async (req, res) => {
+  const { accessToken } = req.session;
+  const tracks = await userService.getTopTracks(accessToken);
+
+  res.status(200).send(tracks);
 });
 
 export default {

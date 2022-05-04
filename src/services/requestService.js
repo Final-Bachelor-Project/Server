@@ -22,6 +22,10 @@ const confirmOrDeclineRequest = async (id, status) => {
 
   if (status === 'accepted' || status === 'rejected') {
     const request = await Request.findOneAndUpdate({ _id: oId }, { status });
+
+    if (status === 'accepted') {
+      await userService.createConnection(request.senderId, request.receiverId);
+    }
     return request;
   }
   return null;
