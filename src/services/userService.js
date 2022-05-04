@@ -81,17 +81,18 @@ const getUserById = async (id) => {
   return user;
 };
 
+// Create connection between users
 const createConnection = async (firstUserId, secondUserId) => {
   const firstUserOId = mongoose.Types.ObjectId(firstUserId);
   const secondUserOId = mongoose.Types.ObjectId(secondUserId);
 
   const firstConnection = await User.updateOne(
     { _id: firstUserOId },
-    { $push: { connections: firstUserOId } }
+    { $push: { connections: secondUserOId } }
   );
   const secondConnection = await User.updateOne(
     { _id: secondUserOId },
-    { $push: { connections: secondUserOId } }
+    { $push: { connections: firstUserOId } }
   );
 
   if (firstConnection && secondConnection) {
