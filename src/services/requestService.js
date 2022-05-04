@@ -2,7 +2,6 @@
 import mongoose from 'mongoose';
 
 import Request from '../models/request';
-import user from '../models/user';
 import userService from './userService';
 
 // Create request
