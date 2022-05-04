@@ -1,3 +1,4 @@
+/* eslint-disable no-underscore-dangle */
 import express from 'express';
 import axios from 'axios';
 
@@ -67,6 +68,24 @@ router.get('/:id', async (req, res) => {
     return;
   }
   res.status(404).send({ message: `No user found with the id ${id}` });
+});
+
+// Get user connections
+router.get('/', async (req, res) => {
+  const user = await userService.getUserById(req.session.loggedInUser._id);
+
+  if (!user) {
+    res.status(404).send({ message: 'No user found' });
+    return;
+  }
+
+  const { connections } = user;
+  if (connections.length === 0) {
+    res.status(404).send({ message: `No connections found for user with id ${user.id}` });
+    return;
+  }
+
+  res.status(200).send(connections);
 });
 
 export default {
