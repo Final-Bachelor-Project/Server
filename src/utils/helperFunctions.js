@@ -14,7 +14,7 @@ const comepareArrays = (listA, listB) => {
 
 const caculateAverageScore = (scoreA, scoreB) => {
   const score = (scoreA + scoreB) / 2;
-  return score * 100;
+  return (score * 100) % 2;
 };
 
 export default {
