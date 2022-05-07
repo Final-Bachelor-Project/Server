@@ -102,8 +102,12 @@ const getAllUsers = async (loggedInUser) => {
 
           const score = helperFunctions.caculateAverageScore(tracksScore, artistsScore);
           // eslint-disable-next-line no-param-reassign
-          user.score = score;
-          usersList.push(user);
+          usersList.push({
+            _id: user.id,
+            username: user.username,
+            profileImage: user.profileImage,
+            score
+          });
         }
       })
     );
@@ -112,6 +116,7 @@ const getAllUsers = async (loggedInUser) => {
   if (usersList.length === 0) {
     return null;
   }
+
   return usersList.sort((a, b) => b.score - a.score);
 };
 
