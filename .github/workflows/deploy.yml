@@ -1,0 +1,23 @@
+name: deployment
+on:
+  push:
+    branches: [ master]
+  workflow_dispatch:
+
+jobs:
+  deployment:
+    runs-on: self-hosted
+    needs: build
+    
+    steps:
+      - name: Deploy to Digital Ocean droplet via SSH action
+        uses: actions/checkout@v2
+        with:
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USERNAME }}
+          key: ${{ secrets.SSH_KEY }}
+          envs: IMAGE_NAME,REGISTRY,{{ secrets.DIGITAL_ACCESS_TOKEN }},GITHUB_SHA
+          remote_branch: "master"
+          scripts:
+            git pull origin master
+
