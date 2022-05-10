@@ -7,8 +7,10 @@
     "dev": "nodemon --exec babel-node src/app.js",
     "lint": "eslint ./src",
     "test": "jest --config ./jest.config.json",
-    "build": "babel src/app.js -d src",
-    "start": "npm run build && babel-node src/app.js"
+    "clean": "rm -rf build && mkdir build",
+    "build-babel": "babel -d ./build src/app.js -s",
+    "build": "npm run clean && npm run build-babel",
+    "start": "npm run build && node build/app.js"
   },
   "repository": {
     "type": "git",
