@@ -1,41 +1,40 @@
-name: deployment
-on:
-  push:
-    branches: [ master]
-  workflow_dispatch:
-jobs:
- build:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v3
+# name: deployment
+# on:
+#   push:
+#     branches: [ master]
+#   workflow_dispatch:
+# jobs:
+#  build:
+#     runs-on: ubuntu-latest
+#     steps:
+#       - uses: actions/checkout@v3
 
-      - name: Use Node.js
-        uses: actions/setup-node@v3
-        with: 
-          node-version: "14.x"
+#       - name: Use Node.js
+#         uses: actions/setup-node@v3
+#         with: 
+#           node-version: "14.x"
 
-      - name: Install dependencies
-        run: npm install
+#       - name: Install dependencies
+#         run: npm install
 
-      - name: Run tests
-        run: npm test
+#       - name: Run tests
+#         run: npm test
       
-      - name: Build application
-        run: npm run build
+#       - name: Build application
+#         run: npm run build
 
-  deployment:
-    runs-on: self-hosted
-    needs: build
+#   deployment:
+#     runs-on: self-hosted
+#     needs: build
     
-    steps:
-      - name: Deploy to Digital Ocean droplet via SSH action
-        uses: actions/checkout@v2
-        with:
-          host: ${{ secrets.SSH_HOST }}
-          username: ${{ secrets.SSH_USERNAME }}
-          key: ${{ secrets.SSH_KEY }}
-          envs: IMAGE_NAME,REGISTRY,{{ secrets.DIGITAL_ACCESS_TOKEN }},GITHUB_SHA
-          remote_branch: "master"
-          scripts:
-            git pull origin master
-
+#     steps:
+#       - name: Deploy to Digital Ocean droplet via SSH action
+#         uses: actions/checkout@v2
+#         with:
+#           host: ${{ secrets.SSH_HOST }}
+#           username: ${{ secrets.SSH_USERNAME }}
+#           key: ${{ secrets.SSH_KEY }}
+#           envs: IMAGE_NAME,REGISTRY,{{ secrets.DIGITAL_ACCESS_TOKEN }},GITHUB_SHA
+#           remote_branch: "master"
+#           scripts:
+#             git pull origin master
