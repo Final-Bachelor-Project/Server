@@ -48,11 +48,12 @@ jobs:
     
     steps:
       - name: Deploy to Digital Ocean droplet via SSH action
+        uses: actions/checkout@v2
         with:
           host: ${{ secrets.SSH_HOST }}
           username: ${{ secrets.SSH_USERNAME }}
           key: ${{ secrets.SSH_KEY }}
           envs: IMAGE_NAME,REGISTRY,{{ secrets.DIGITAL_ACCESS_TOKEN }},GITHUB_SHA
           script: |
-           git pull origin develop
+           git pull origin master
 
