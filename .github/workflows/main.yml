@@ -1,9 +1,9 @@
 name: Main
 on:
   push:
-    branches: [ master ]
+    branches: [ master]
   pull_request:
-    branches: [ master ]
+    branches: [ master, develop ]
   workflow_dispatch:
 jobs:
   build:
@@ -19,7 +19,7 @@ jobs:
         run: npm install
       - name: Run test
         run: npm test
-        
+
   deployment:
     runs-on: self-hosted
     steps:

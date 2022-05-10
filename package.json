@@ -2,12 +2,15 @@
   "name": "server",
   "version": "1.0.0",
   "description": "",
-  "main": "app.js",
+  "main": "src/app.js",
   "scripts": {
-    "dev": "nodemon --exec babel-node app.js",
+    "dev": "nodemon --exec babel-node src/app.js",
     "lint": "eslint ./src",
-    "babel": "babel",
-    "test": "jest --config ./jest.config.json"
+    "test": "jest --config ./jest.config.json",
+    "clean": "rm -rf build && mkdir build",
+    "build-babel": "babel -d ./build src/ -s",
+    "build": "npm run clean && npm run build-babel",
+    "start": "npm run build && node build/app.js"
   },
   "repository": {
     "type": "git",
@@ -20,16 +23,25 @@
   },
   "homepage": "https://github.com/Final-Bachelor-Project/Server#readme",
   "dependencies": {
+    "axios": "^0.26.1",
     "body-parser": "^1.19.2",
     "config": "^3.3.7",
+    "cors": "^2.8.5",
     "express": "^4.17.3",
+    "express-session": "^1.17.2",
+    "fetch": "^1.1.0",
+    "mongoose": "^6.3.1",
+    "query-string": "^7.1.1",
+    "rbo": "^1.0.4",
     "regenerator-runtime": "^0.13.9",
-    "smacker": "^1.0.5"
+    "smacker": "^1.0.5",
+    "util": "^0.12.4"
   },
   "devDependencies": {
-    "@babel/core": "^7.17.9",
+    "@babel/cli": "^7.17.10",
+    "@babel/core": "^7.17.10",
     "@babel/node": "^7.16.8",
-    "@babel/preset-env": "^7.16.11",
+    "@babel/preset-env": "^7.17.10",
     "eslint": "^8.14.0",
     "eslint-config-airbnb": "^19.0.4",
     "eslint-plugin-import": "^2.26.0",
@@ -64,8 +76,7 @@
         "error"
       ],
       "quotes": [
-        "error",
-        "backtick"
+        "error"
       ]
     }
   }
