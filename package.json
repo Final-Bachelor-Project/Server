@@ -2,12 +2,13 @@
   "name": "server",
   "version": "1.0.0",
   "description": "",
-  "main": "app.js",
+  "main": "src/app.js",
   "scripts": {
-    "start": "node src/app.js",
     "dev": "nodemon --exec babel-node src/app.js",
     "lint": "eslint ./src",
-    "test": "jest --config ./jest.config.json"
+    "test": "jest --config ./jest.config.json",
+    "build": "babel src/app.js -d src",
+    "start": "npm run build && babel-node src/app.js"
   },
   "repository": {
     "type": "git",
@@ -34,9 +35,10 @@
     "smacker": "^1.0.5"
   },
   "devDependencies": {
-    "@babel/core": "^7.17.9",
+    "@babel/cli": "^7.17.10",
+    "@babel/core": "^7.17.10",
     "@babel/node": "^7.16.8",
-    "@babel/preset-env": "^7.16.11",
+    "@babel/preset-env": "^7.17.10",
     "eslint": "^8.14.0",
     "eslint-config-airbnb": "^19.0.4",
     "eslint-plugin-import": "^2.26.0",
