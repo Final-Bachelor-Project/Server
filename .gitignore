@@ -1,6 +1,6 @@
 .idea
 node_modules
-config/default.json
+src/config/default.json
 coverage
 .vscode
 build
