@@ -89,7 +89,8 @@ router.get('/callback', async (req, res) => {
     return;
   }
 
-  res.redirect(`${clientRedirectUri}/complete`);
+  res.status(200).send(req.session.accessToken);
+  //res.redirect(`${clientRedirectUri}/complete`);
 });
 
 // Postman session
