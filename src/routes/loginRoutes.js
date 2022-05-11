@@ -89,10 +89,8 @@ router.get('/callback', async (req, res) => {
     return;
   }
 
-  res.send({
-    message: req.session.accessToken
-  });
-  // res.redirect(`${clientRedirectUri}/complete`);
+  res.status(200).send(currentSpotifyUser);
+  //res.redirect(`${clientRedirectUri}/complete`);
 });
 
 // Postman session
