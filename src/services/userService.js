@@ -33,7 +33,7 @@ const getCurrentUser = async (accessToken) => {
     headers: { Authorization: `Bearer ${accessToken}` }
   });
 
-  return user;
+  return "user";
 };
 
 // Get user by spotify id
