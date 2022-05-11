@@ -29,11 +29,11 @@ const createUser = async (spotifyUserId, username, firstName, lastName, profileI
 
 // Get logged in user
 const getCurrentUser = async (accessToken) => {
-  // const user = await axios.get('https://api.spotify.com/v1/me', {
-  //   headers: { Authorization: `Bearer ${accessToken}` }
-  // });
+  const user = await axios.get('https://api.spotify.com/v1/me', {
+    headers: { Authorization: `Bearer ${accessToken}` }
+  });
 
-  return accessToken;
+  return user;
 };
 
 // Get user by spotify id
