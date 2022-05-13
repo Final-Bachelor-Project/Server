@@ -26,7 +26,7 @@ const start = async () => {
   app.use(session({
     secret: config.get('secret'),
     resave: false,
-    saveUninitialized: true
+    saveUninitialized: false
   }));
 
   // Database connection
