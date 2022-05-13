@@ -13,7 +13,6 @@ const redirectUri = config.get('redirectUri');
 const clientRedirectUri = config.get('clientRedirectUri');
 const clientId = config.get('clientId');
 const clientSecret = config.get('clientSecret');
-let accessToken;
 
 const generateRandomString = (length) => {
   let text = '';
@@ -71,7 +70,6 @@ router.get('/callback', async (req, res) => {
 
   if (response.data.access_token) {
     req.session.accessToken = response.data.access_token;
-    accessToken = response.data.access_token;
   }
 
   const currentSpotifyUser = await userService.getCurrentUser(req.session.accessToken);
@@ -112,6 +110,5 @@ router.get('/session', async (req, res) => {
 
 export default {
   router: serverErrorSafe(router),
-  generateRandomString,
-  accessToken
+  generateRandomString
 };
