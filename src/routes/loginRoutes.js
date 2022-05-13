@@ -53,7 +53,7 @@ router.get('/', (req, res) => {
 router.get('/callback', async (req, res) => {
   const { code } = req.query;
 
-  await axios({
+  const response = await axios({
     method: 'post',
     url: 'https://accounts.spotify.com/api/token',
     data: querystring.stringify({
@@ -68,11 +68,10 @@ router.get('/callback', async (req, res) => {
     }
   });
 
-  // if (response.data.access_token) {
-  //   req.session.accessToken = response.data.access_token;
-  // }
+  if (response.data.access_token) {
+    req.session.accessToken = response.data.access_token;
+  }
 
-  req.session.accessToken = 'RANDOMACESSSSSS';
   const currentSpotifyUser = await userService.getCurrentUser(req.session.accessToken);
   if (!currentSpotifyUser) {
     res.status(404).send({ message: 'User not found' });
