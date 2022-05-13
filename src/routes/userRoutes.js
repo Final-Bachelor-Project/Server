@@ -51,7 +51,7 @@ router.get('/current', async (req, res) => {
     }
   }
   catch (e) {
-    res.status(500).send(accessToken);
+    res.status(e.statusCode).send({ message: `${e} with token ${accessToken}` });
     return;
   }
 

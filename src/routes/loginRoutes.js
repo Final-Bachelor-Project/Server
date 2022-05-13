@@ -72,7 +72,7 @@ router.get('/callback', async (req, res) => {
   //   req.session.accessToken = response.data.access_token;
   // }
 
-  req.session.accessToken = "WOOO";
+  req.session.accessToken = 'RANDOMACESSSSSS';
   const currentSpotifyUser = await userService.getCurrentUser(req.session.accessToken);
   if (!currentSpotifyUser) {
     res.status(404).send({ message: 'User not found' });
