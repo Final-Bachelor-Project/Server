@@ -17,10 +17,9 @@ const start = async () => {
   app.use(bodyparser.json());
   app.use(bodyparser.urlencoded({ extended: false }));
   app.use(express.static('public'));
-  // app.use(cors({
-  //   allowedHeaders: ['Accept-Version', 'Authorization', 'Credentials', 'Content-Type'],
-  //   credentials: true
-  // }));
+  app.use(cors({
+    credentials: true
+  }));
 
   // Setting up the session
   app.use(session({
