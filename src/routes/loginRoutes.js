@@ -29,7 +29,7 @@ const stateKey = 'spotify_auth_state';
 router.get('/', (req, res) => {
   const state = generateRandomString(16);
   res.cookie(stateKey, state);
-  //res.header('Access-Control-Allow-Origin');
+  res.header('Access-Control-Allow-Origin');
 
   const scope = `user-modify-playback-state
     user-read-playback-state
