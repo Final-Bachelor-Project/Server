@@ -33,8 +33,8 @@ const start = async () => {
   await databaseService.connect();
 
   // Routes
-  app.use('/api/users', verifyAccessToken, userRouter.router);
-  app.use('/api/requests', verifyAccessToken, requestRouter.router);
+  app.use('/api/users', userRouter.router);
+  app.use('/api/requests', requestRouter.router);
   app.use('/api/login', loginRouter.router);
 
   // Start server
