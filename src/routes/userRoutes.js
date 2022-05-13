@@ -41,20 +41,15 @@ router.post('/', async (req, res) => {
 // Get current user data from Spotify API
 router.get('/current', async (req, res) => {
   const { accessToken } = req.session;
-  try {
-    const user = await axios.get('https://api.spotify.com/v1/me', {
-      headers: { Authorization: `Bearer ${accessToken}` }
-    });
-    if (user) {
-      res.status(200).send({ user: user.data });
-      return;
-    }
-  }
-  catch (e) {
-    res.status(e.statusCode).send({ message: `${e} with token ${accessToken}` });
+
+  const user = await axios.get('https://api.spotify.com/v1/me', {
+    headers: { Authorization: `Bearer ${accessToken}` }
+  });
+
+  if (user) {
+    res.status(200).send({ user: user.data });
     return;
   }
-
   res.status(404).send({ message: 'User not found' });
 });
 
