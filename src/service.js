@@ -25,7 +25,7 @@ const start = async () => {
   // Setting up the session
   app.use(session({
     secret: config.get('secret'),
-    resave: false,
+    resave: true,
     saveUninitialized: false
   }));
 
