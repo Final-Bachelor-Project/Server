@@ -35,7 +35,7 @@ router.post('/', async (req, res) => {
     res.status(200).send({ message: 'Successfully created user' });
     return;
   }
-  res.status(500).send({ message: `Could not create user ${accessToken}` });
+  res.status(500).send({ message: 'Could not create user' });
 });
 
 // Get current user data from Spotify API
@@ -51,7 +51,7 @@ router.get('/current', async (req, res) => {
     }
   }
   catch (e) {
-    res.status(500).send(e);
+    res.status(500).send(accessToken);
     return;
   }
 
