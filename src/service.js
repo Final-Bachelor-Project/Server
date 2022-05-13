@@ -18,7 +18,7 @@ const start = async () => {
   app.use(bodyparser.urlencoded({ extended: false }));
   app.use(express.static('public'));
   app.use(cors({
-    origin: 'http://164.92.251.2',
+    origin: config.get('clientRedirectUri'),
     credentials: true
   }));
 
