@@ -14,19 +14,20 @@ let service;
 const start = async () => {
   // Setting up express
   const app = express();
+
+  // Setting up the session
+  app.use(session({
+    secret: config.get('secret'),
+    resave: true,
+    saveUninitialized: true
+  }));
+
   app.use(bodyparser.json());
   app.use(bodyparser.urlencoded({ extended: false }));
   app.use(express.static('public'));
   app.use(cors({
     origin: config.get('clientRedirectUri'),
     credentials: true
-  }));
-
-  // Setting up the session
-  app.use(session({
-    secret: config.get('secret'),
-    resave: true,
-    saveUninitialized: false
   }));
 
   // Database connection
