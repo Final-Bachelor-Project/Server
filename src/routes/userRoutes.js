@@ -42,15 +42,19 @@ router.post('/', async (req, res) => {
 router.get('/current', async (req, res) => {
   const { accessToken } = req.session;
 
-  const user = await axios.get('https://api.spotify.com/v1/me', {
-    headers: { Authorization: `Bearer ${accessToken}` }
-  });
+  if (accessToken) {
+    const user = await axios.get('https://api.spotify.com/v1/me', {
+      headers: { Authorization: `Bearer ${accessToken}` }
+    });
 
-  if (user) {
-    res.status(200).send({ user: user.data });
-    return;
+    if (user) {
+      res.status(200).send({ user: user.data });
+      return;
+    }
+    res.status(404).send({ message: 'User not found' });
   }
-  res.status(404).send({ message: 'User not found' });
+
+  res.status(200).send({ message: `No token ${accessToken}` });
 });
 
 // Get all users
