@@ -1,3 +1,5 @@
+import loginRoutes from '../routes/loginRoutes';
+
 const verifyAccessToken = async (req, res, next) => {
   // Allows to user postman
   if (req.headers.session) {
@@ -5,7 +7,7 @@ const verifyAccessToken = async (req, res, next) => {
   }
   const { accessToken } = req.session;
 
-  if (accessToken) {
+  if (loginRoutes.accessToken) {
     next();
     return;
   }
