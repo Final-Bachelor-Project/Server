@@ -3,7 +3,7 @@ import config from 'config';
 import bodyparser from 'body-parser';
 import cors from 'cors';
 import session from 'express-session';
-import * as redis from 'redis';
+import * as redis from 'ioredis';
 import connectRedis from 'connect-redis';
 
 import databaseService from './services/databaseService';
@@ -17,16 +17,8 @@ const start = async () => {
   // Setting up express
   const app = express();
 
-  const RedisStore = await connectRedis(session);
-  const redisClient = await redis.createClient({ host: 'localhost', port: 6379 });
-  await redisClient.connect();
-
-  redisClient.on('error', (err) => {
-    console.log(`Could not establish a connection with redis. ${err}`);
-  });
-  redisClient.on('connect', (err) => {
-    console.log('Connected to redis successfully');
-  });
+  const RedisStore = connectRedis(session);
+  const redisClient = new redis.Cluster({ host: 'localhost', port: 6379 });
 
   // Setting up the session
   app.use(session({
