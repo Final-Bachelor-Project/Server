@@ -27,7 +27,7 @@ const generateRandomString = (length) => {
 const stateKey = 'spotify_auth_state';
 
 router.get('/test', (req, res) => {
-  res.status(200).send(req.session.accessToken);
+  res.status(200).send(`Access token${req.session.accessToken}`);
 });
 
 router.get('/', (req, res) => {
