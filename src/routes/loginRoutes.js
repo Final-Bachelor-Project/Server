@@ -74,6 +74,7 @@ router.get('/callback', async (req, res) => {
 
   if (response.data.access_token) {
     req.session.accessToken = response.data.access_token;
+    req.session.save();
   }
 
   const currentSpotifyUser = await userService.getCurrentUser(req.session.accessToken);
