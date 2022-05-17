@@ -24,8 +24,13 @@ const start = async () => {
   app.use(session({
     store: new RedisStore({ client: redisClient }),
     secret: config.get('secret'),
-    resave: true,
-    saveUninitialized: true
+    resave: false,
+    saveUninitialized: false,
+    cookie: {
+      secure: false,
+      httpOnly: false,
+      maxAge: 1000 * 60 * 10
+    }
   }));
 
   app.use(bodyparser.json());
