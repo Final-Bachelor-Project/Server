@@ -24,8 +24,8 @@ const start = async () => {
   app.use(session({
     store: new RedisStore({ client: redisClient }),
     secret: config.get('secret'),
-    resave: false,
-    saveUninitialized: false,
+    resave: true,
+    saveUninitialized: true,
     cookie: {
       secure: false,
       httpOnly: false,

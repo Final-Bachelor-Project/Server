@@ -42,8 +42,6 @@ router.post('/', async (req, res) => {
 router.get('/current', async (req, res) => {
   const { accessToken } = req.session;
 
-  req.session.test = "Tre";
-
   if (accessToken) {
     const user = await axios.get('https://api.spotify.com/v1/me', {
       headers: { Authorization: `Bearer ${accessToken}` }
