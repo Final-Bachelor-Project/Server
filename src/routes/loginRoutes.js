@@ -57,6 +57,7 @@ router.get('/', (req, res) => {
 router.get('/callback', async (req, res) => {
   const { code } = req.query;
 
+  req.session.code = "code";
   const response = await axios({
     method: 'post',
     url: 'https://accounts.spotify.com/api/token',
