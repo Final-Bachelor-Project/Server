@@ -5,6 +5,8 @@ import cors from 'cors';
 import session from 'express-session';
 import redis from 'ioredis';
 import connectRedis from 'connect-redis';
+import cookieParser from 'cookie-parser';
+import favicon from 'serve-favicon';
 
 import databaseService from './services/databaseService';
 import userRouter from './routes/userRoutes';
@@ -19,6 +21,10 @@ const start = async () => {
 
   const RedisStore = connectRedis(session);
   const redisClient = redis.createClient({ host: 'localhost', port: 6379 });
+
+  // Cookie parser
+  app.use(favicon());
+  app.use(cookieParser('seccret'));
 
   // Setting up the session
   app.use(session({
