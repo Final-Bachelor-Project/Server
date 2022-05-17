@@ -24,12 +24,13 @@ const start = async () => {
   app.use(session({
     store: new RedisStore({ client: redisClient }),
     secret: config.get('secret'),
-    resave: true,
+    resave: false,
     saveUninitialized: true,
     cookie: {
       secure: false,
       httpOnly: false,
-      maxAge: 1000 * 60 * 10
+      maxAge: 1000 * 60 * 10,
+      sameSite: 'lax'
     }
   }));
 
