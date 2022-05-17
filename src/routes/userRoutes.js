@@ -42,6 +42,8 @@ router.post('/', async (req, res) => {
 router.get('/current', async (req, res) => {
   const { accessToken } = req.session;
 
+  req.session.test = "Tre";
+
   if (accessToken) {
     const user = await axios.get('https://api.spotify.com/v1/me', {
       headers: { Authorization: `Bearer ${accessToken}` }
@@ -54,7 +56,7 @@ router.get('/current', async (req, res) => {
     res.status(404).send({ message: 'User not found' });
   }
 
-  res.status(200).send({ message: `No token ${accessToken}, ${req.session}` });
+  res.status(200).send({ message: `No token ${accessToken}, ${req.session.test}` });
 });
 
 // Get all users
