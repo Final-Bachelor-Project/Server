@@ -54,7 +54,7 @@ router.get('/current', async (req, res) => {
     res.status(404).send({ message: 'User not found' });
   }
 
-  res.status(200).send({ message: `No token ${accessToken}, ${req.session.test}, ${req.session.code}` });
+  res.status(200).send({ message: `No token ${accessToken}, ${req.session.test}` });
 });
 
 // Get all users
