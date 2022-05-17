@@ -5,7 +5,6 @@ import cors from 'cors';
 import session from 'express-session';
 import redis from 'ioredis';
 import connectRedis from 'connect-redis';
-import cookieSession from 'cookie-session';
 
 import databaseService from './services/databaseService';
 import userRouter from './routes/userRoutes';
@@ -22,7 +21,7 @@ const start = async () => {
   const redisClient = redis.createClient({ host: 'localhost', port: 6379 });
 
   // Setting up the session
-  app.use(cookieSession({
+  app.use(session({
     store: new RedisStore({ client: redisClient }),
     secret: config.get('secret'),
     resave: true,
