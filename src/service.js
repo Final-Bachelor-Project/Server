@@ -17,8 +17,16 @@ const start = async () => {
   // Setting up express
   const app = express();
 
-  const RedisStore = connectRedis(session);
-  const redisClient = redis.createClient({ host: 'localhost', port: 6379 });
+  const RedisStore = await connectRedis(session);
+  const redisClient = await redis.createClient({ host: 'localhost', port: 6379 });
+  await redisClient.connect();
+
+  redisClient.on('error', (err) => {
+    console.log(`Could not establish a connection with redis. ${err}`);
+  });
+  redisClient.on('connect', (err) => {
+    console.log('Connected to redis successfully');
+  });
 
   // Setting up the session
   app.use(session({
