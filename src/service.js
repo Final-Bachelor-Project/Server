@@ -3,6 +3,8 @@ import config from 'config';
 import bodyparser from 'body-parser';
 import cors from 'cors';
 import session from 'express-session';
+import RedisStore from 'connect-redis';
+import { createClient } from 'redis';
 
 import databaseService from './services/databaseService';
 import userRouter from './routes/userRoutes';
@@ -15,8 +17,11 @@ const start = async () => {
   // Setting up express
   const app = express();
 
+  const redisClient = createClient();
+
   // Setting up the session
   app.use(session({
+    store: new RedisStore({ client: redisClient }),
     secret: config.get('secret'),
     resave: true,
     saveUninitialized: true
