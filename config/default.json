@@ -3,7 +3,7 @@
     "connection": "mongodb+srv://root:root@cluster0.nsfpb.mongodb.net/myFirstDatabase?retryWrites=true&w=majority",
     "clientId": "5f4ca930ce254b898b4d2d4be68ebbe4",
     "clientSecret": "bf4c35fa58524cb2bfb3f56eaa96b05c",
-    "redirectUri": "http://207.154.223.42/api/login/callback/",
+    "redirectUri": "http://164.92.251.2/api/login/callback/",
     "clientRedirectUri": "http://164.92.251.2",
     "secret": "session_secret"
 }
