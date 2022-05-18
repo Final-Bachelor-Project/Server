@@ -47,7 +47,8 @@ router.get('/current', async (req, res) => {
   });
 
   if (user) {
-    res.status(200).send({ user: user.data });
+    res.status(200).send('It works!');
+    // res.status(200).send({ user: user.data });
     return;
   }
   res.status(404).send({ message: 'User not found' });
