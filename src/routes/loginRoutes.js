@@ -92,8 +92,16 @@ router.get('/callback', async (req, res) => {
     res.redirect(`${clientRedirectUri}/explore`);
     return;
   }
-
-  setTimeout(() => res.redirect(`${clientRedirectUri}/complete`), 1000);
+  req.session.save((err) => {
+    if (err) {
+      console.log('session save error', err);
+      res.sendStatus(500);
+    }
+    else {
+      console.log('session token', req.session.accessToken);
+      res.redirect(`${clientRedirectUri}/complete`);
+    }
+  });
 });
 
 // Postman session
