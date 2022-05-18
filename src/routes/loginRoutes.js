@@ -92,15 +92,19 @@ router.get('/callback', async (req, res) => {
     res.redirect(`${clientRedirectUri}/explore`);
     return;
   }
-  req.session.save((err) => {
-    if (err) {
-      console.log('session save error', err);
-      res.sendStatus(500);
-    }
-    else {
-      console.log('session token', req.session.accessToken);
-      res.redirect(`${clientRedirectUri}/complete`);
-    }
+  // req.session.save((err) => {
+  //   if (err) {
+  //     console.log('session save error', err);
+  //     res.sendStatus(500);
+  //   }
+  //   else {
+  //     console.log('session token', req.session.accessToken);
+  //     res.redirect(`${clientRedirectUri}/complete`);
+  //   }
+  // });
+  req.session.regenerate(() => {
+    req.session.accessToken = response.data.access_token;
+    res.redirect(`${clientRedirectUri}/complete`);
   });
 });
 
