@@ -3,6 +3,8 @@ import config from 'config';
 import bodyparser from 'body-parser';
 import cors from 'cors';
 import session from 'express-session';
+import redis from 'ioredis';
+import connectRedis from 'connect-redis';
 
 import databaseService from './services/databaseService';
 import userRouter from './routes/userRoutes';
@@ -14,16 +16,30 @@ let service;
 const start = async () => {
   // Setting up express
   const app = express();
-  app.use(bodyparser.json());
-  app.use(bodyparser.urlencoded({ extended: false }));
-  app.use(express.static('public'));
-  app.use(cors());
+
+  const RedisStore = connectRedis(session);
+  const redisClient = redis.createClient({ host: 'localhost', port: 6379 });
 
   // Setting up the session
   app.use(session({
+    store: new RedisStore({ client: redisClient }),
     secret: config.get('secret'),
     resave: false,
-    saveUninitialized: true
+    saveUninitialized: true,
+    cookie: {
+      secure: false,
+      httpOnly: false,
+      maxAge: 1000 * 60 * 10,
+      sameSite: 'lax'
+    }
+  }));
+
+  app.use(bodyparser.json());
+  app.use(bodyparser.urlencoded({ extended: false }));
+  app.use(express.static('public'));
+  app.use(cors({
+    origin: config.get('clientRedirectUri'),
+    credentials: true
   }));
 
   // Database connection
