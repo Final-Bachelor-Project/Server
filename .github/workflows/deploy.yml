@@ -18,4 +18,5 @@ jobs:
           remote_branch: "master"
           scripts:
             git pull origin master
+            pm2 stop 3
 
