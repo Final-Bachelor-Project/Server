@@ -9,7 +9,7 @@ import helperFunctions from '../utils/helperFunctions';
 
 // Create user
 // eslint-disable-next-line max-len
-const createUser = async (spotifyUserId, username, firstName, lastName, profileImage, country, city, bio, dateOfBirth) => {
+const createUser = async (spotifyUserId, username, firstName, lastName, profileImage, country, city, bio, dateOfBirth, tracks, artists) => {
   const user = await new User({
     spotifyUserId,
     username,
@@ -21,7 +21,9 @@ const createUser = async (spotifyUserId, username, firstName, lastName, profileI
     bio,
     dateOfBirth,
     connections: [],
-    createdAt: Date.now()
+    createdAt: Date.now(),
+    tracks,
+    artists
   }).save();
 
   return user;
