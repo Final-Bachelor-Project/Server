@@ -26,10 +26,6 @@ const generateRandomString = (length) => {
 
 const stateKey = 'spotify_auth_state';
 
-router.get('/test', (req, res) => {
-  res.status(200).send(`Access token${req.session.accessToken}`);
-});
-
 router.get('/', (req, res) => {
   const state = generateRandomString(16);
   res.cookie(stateKey, state);
@@ -92,16 +88,8 @@ router.get('/callback', async (req, res) => {
     res.redirect(`${clientRedirectUri}/explore`);
     return;
   }
-  req.session.save((err) => {
-    if (err) {
-      console.log('session save error', err);
-      res.sendStatus(500);
-    }
-    else {
-      console.log('session token', req.session.accessToken);
-      res.redirect(`${clientRedirectUri}/complete`);
-    }
-  });
+
+  res.redirect(`${clientRedirectUri}/complete`);
 });
 
 // Postman session
