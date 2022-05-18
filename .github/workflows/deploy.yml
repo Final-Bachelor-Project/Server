@@ -8,6 +8,8 @@ jobs:
     runs-on: self-hosted
     
     steps:
+      - name: Pull changes
+        run: git pull origin master
       - name: Restart server application
         run: pm2 restart server
 
