@@ -2,7 +2,6 @@
 import express from 'express';
 import axios from 'axios';
 
-import { async } from 'regenerator-runtime';
 import userService from '../services/userService';
 import serverErrorSafe from '../utils/serverErrorSafe';
 

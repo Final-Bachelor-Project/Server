@@ -8,7 +8,7 @@ import connectRedis from 'connect-redis';
 
 import databaseService from './services/databaseService';
 import userRouter from './routes/userRoutes';
-import loginRouter from './routes/loginRoutes';
+import authRouter from './routes/authRoutes';
 import requestRouter from './routes/requestRoutes';
 import verifyAccessToken from './middleware/verifyAccessToken';
 
@@ -48,7 +48,7 @@ const start = async () => {
   // Routes
   app.use('/api/users', verifyAccessToken, userRouter.router);
   app.use('/api/requests', verifyAccessToken, requestRouter.router);
-  app.use('/api/login', loginRouter.router);
+  app.use('/api/auth', authRouter.router);
 
   // Start server
   const port = config.get('port');
