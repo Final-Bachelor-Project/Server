@@ -115,18 +115,6 @@ router.get('/current/tracks', async (req, res) => {
   res.status(200).send(tracks);
 });
 
-// Log out
-router.get('/logout', async (req, res) => {
-  req.session.destroy();
-
-  res.status(200).send({ message: 'Logged out' });
-});
-
-// Get session
-router.get('/session', (req, res) => {
-  res.status(200).send(req.session.loggedInUser);
-});
-
 export default {
   router: serverErrorSafe(router)
 };
