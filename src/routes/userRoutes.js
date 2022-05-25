@@ -2,6 +2,7 @@
 import express from 'express';
 import axios from 'axios';
 
+import { async } from 'regenerator-runtime';
 import userService from '../services/userService';
 import serverErrorSafe from '../utils/serverErrorSafe';
 
@@ -112,6 +113,18 @@ router.get('/current/tracks', async (req, res) => {
   const tracks = await userService.getTopTracks(accessToken);
 
   res.status(200).send(tracks);
+});
+
+// Log out
+router.get('/logout', async (req, res) => {
+  req.session.destroy();
+
+  res.status(200).send({ message: 'Logged out' });
+});
+
+// Get session
+router.get('/session', async (req, res) => {
+  res.status(200).send(req.session);
 });
 
 export default {
