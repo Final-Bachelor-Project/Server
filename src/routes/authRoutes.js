@@ -115,7 +115,7 @@ router.get('/session', (req, res) => {
 });
 
 // Log out
-router.get('/logout', async (req, res) => {
+router.post('/logout', async (req, res) => {
   req.session.destroy();
 
   res.status(200).send({ message: 'Logged out' });
