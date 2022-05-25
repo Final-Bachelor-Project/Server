@@ -58,7 +58,8 @@ router.get('/', async (req, res) => {
   const { loggedInUser } = req.session;
   const users = await userService.getAllUsers(loggedInUser);
   if (users) {
-    res.status(200).send(users);
+    res.status(200).send('It works!');
+    // res.status(200).send(users);
     return;
   }
   res.status(404).send({ message: 'No users found' });
