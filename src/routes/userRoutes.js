@@ -123,7 +123,7 @@ router.get('/logout', async (req, res) => {
 });
 
 // Get session
-router.get('/session', async (req, res) => {
+router.get('/session', (req, res) => {
   res.status(200).send(req.session.loggedInUser);
 });
 
