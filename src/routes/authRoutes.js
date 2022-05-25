@@ -85,7 +85,7 @@ router.get('/callback', async (req, res) => {
     await userService.saveUserTopTracks(req.session.accessToken, existingUser._id);
     await userService.saveUserTopArtists(req.session.accessToken, existingUser._id);
 
-    res.redirect(`${clientRedirectUri}/explore`);
+    res.redirect(`${clientRedirectUri}/`);
     return;
   }
 
