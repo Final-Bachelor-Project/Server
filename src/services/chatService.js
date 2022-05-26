@@ -33,7 +33,6 @@ const getChatByUsersIds = async (userId1, userId2) => {
   const oId2 = mongoose.Types.ObjectId(userId2);
 
   const chats = await Chat.find({ participants: { $in: [oId1, oId2] } });
-
   if (chats.length === 0) {
     return null;
   }

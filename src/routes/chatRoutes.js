@@ -32,6 +32,7 @@ router.get('/users/:id', async (req, res) => {
   res.status(200).send(chat);
 });
 
+// Get chat by id
 router.get('/:id', async (req, res) => {
   const currentUser = req.session.loggedInUser;
   const { id } = req.params;

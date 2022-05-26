@@ -58,7 +58,6 @@ const getUserProfile = async (spotifyUserId, accessToken) => {
 const getUserById = async (id) => {
   const oId = mongoose.Types.ObjectId(id);
   const user = await User.findById({ _id: oId });
-
   return user;
 };
 
@@ -79,8 +78,8 @@ const getListOfArtists = (user) => {
 // Get all registered users except the logged in one
 const getAllUsers = async (loggedInUser) => {
   const oId = mongoose.Types.ObjectId(loggedInUser._id);
-  const users = await User.find({ _id: { $ne: oId } });
 
+  const users = await User.find({ _id: { $ne: oId } });
   const currentUser = await getUserById(loggedInUser._id);
 
   const usersList = [];
