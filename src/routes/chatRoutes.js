@@ -24,9 +24,9 @@ router.get('/:id', async (req, res) => {
   const currentUser = req.session.loggedInUser;
   const { id } = req.params;
 
-  const chat = await chatService.getChatByUsersIds(currentUser._id, id);
+  let chat = await chatService.getChatByUsersIds(currentUser._id, id);
   if (chat.length === 0) {
-    await chatService.createChat(currentUser._id, id);
+    chat = await chatService.createChat(currentUser._id, id);
   }
 
   res.status(200).send(chat);
