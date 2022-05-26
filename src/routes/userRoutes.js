@@ -115,7 +115,7 @@ router.get('/current/tracks', async (req, res) => {
 });
 
 // Get users common tracks
-router.get('/tracks/:id/common', async (req, res) => {
+router.get('/tracks/common/:id', async (req, res) => {
   const { id } = req.params;
 
   const user = await userService.getUserById(id);

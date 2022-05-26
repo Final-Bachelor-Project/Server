@@ -212,7 +212,12 @@ const getUsersCommonTracks = async (loggedInUser, user) => {
   const currentUserTracks = getListOfTracks(loggedInUser);
   const userTracks = getListOfTracks(user);
 
-  const commonTracks = currentUserTracks.filter((track) => userTracks.includes(track));
+  const commonTacksIds = currentUserTracks.filter((track) => userTracks.includes(track));
+
+  const commonTracks = await Promise.all(commonTacksIds.map(async (id) => {
+    const track = await axios.get(`https://api.spotify.com/v1/tracks/${id}`);
+    return track;
+  }));
 
   return commonTracks;
 };
