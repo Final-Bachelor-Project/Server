@@ -3,7 +3,6 @@
 import axios from 'axios';
 import mongoose from 'mongoose';
 
-import { async } from 'regenerator-runtime';
 import User from '../models/user';
 import requestService from './requestService';
 import helperFunctions from '../utils/helperFunctions';
