@@ -183,7 +183,7 @@ const saveUserTopTracks = async (accessToken, id) => {
 
 // Get user spotify artists data
 const getUserSpotifyArtists = async (accessToken) => {
-  const artists = await axios.get('https://api.spotify.com/v1/me/top/artists', {
+  const artists = await axios.get('https://api.spotify.com/v1/me/top/artists?time_range=short_term', {
     headers: { Authorization: `Bearer ${accessToken}` }
   });
 
