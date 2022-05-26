@@ -208,15 +208,22 @@ const saveUserTopArtists = async (accessToken, id) => {
 };
 
 // Get user's common tracks
-const getUsersCommonTracks = async (loggedInUser, user) => {
+const getUsersCommonTracks = async (loggedInUser, user, accessToken) => {
   const currentUserTracks = getListOfTracks(loggedInUser);
   const userTracks = getListOfTracks(user);
 
-  const commonTacksIds = currentUserTracks.filter((track) => userTracks.includes(track));
+  const commonTracksIds = currentUserTracks.filter((track) => userTracks.includes(track));
 
-  const commonTracks = await Promise.all(commonTacksIds.map(async (id) => {
-    const track = await axios.get(`https://api.spotify.com/v1/tracks/${id}`);
-    return track;
+  const commonTracks = await Promise.all(commonTracksIds.map(async (id) => {
+    const track = await axios.get(`https://api.spotify.com/v1/tracks/${id}`, {
+      headers: { Authorization: `Bearer ${accessToken}` }
+    });
+
+    return {
+      name: track.data.name,
+      id: track.data.id,
+      image: track.data.album.images[0].url
+    };
   }));
 
   return commonTracks;

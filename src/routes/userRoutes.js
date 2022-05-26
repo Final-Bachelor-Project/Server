@@ -119,7 +119,11 @@ router.get('/tracks/common/:id', async (req, res) => {
   const { id } = req.params;
 
   const user = await userService.getUserById(id);
-  const tracks = await userService.getUsersCommonTracks(req.session.loggedInUser, user);
+  const tracks = await userService.getUsersCommonTracks(
+    req.session.loggedInUser,
+    user,
+    req.session.accessToken
+  );
 
   res.status(200).send(tracks);
 });
