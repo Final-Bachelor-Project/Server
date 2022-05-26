@@ -3,6 +3,7 @@
 import axios from 'axios';
 import mongoose from 'mongoose';
 
+import { async } from 'regenerator-runtime';
 import User from '../models/user';
 import requestService from './requestService';
 import helperFunctions from '../utils/helperFunctions';
@@ -226,7 +227,30 @@ const getUsersCommonTracks = async (loggedInUser, user, accessToken) => {
     };
   }));
 
-  return commonTracks;
+  return commonTracks.slice(0, 5);
+};
+
+// Get users common artits
+const getUsersCommonArtists = async (loggedInUser, user, accessToken) => {
+  const currentUserArtists = getListOfArtists(loggedInUser);
+  const userArtists = getListOfArtists(user);
+
+  const commonArtistsIds = currentUserArtists.filter((artist) => userArtists.includes(artist));
+  const commonArtists = await Promise.all(
+    commonArtistsIds.map(async (id) => {
+      const artist = await axios.get(`https://api.spotify.com/v1/artitst/${id}`, {
+        headers: { Authorization: `Bearer ${accessToken}` }
+      });
+
+      return {
+        name: artist.data.name,
+        id: artist.data.id,
+        image: artist.data.images[0].url
+      };
+    })
+  );
+
+  return commonArtists.slice(0, 5);
 };
 
 export default {
@@ -242,5 +266,6 @@ export default {
   getUserSpotifyTracks,
   saveUserTopArtists,
   getUserSpotifyArtists,
-  getUsersCommonTracks
+  getUsersCommonTracks,
+  getUsersCommonArtists
 };
