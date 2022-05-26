@@ -1,6 +1,5 @@
 /* eslint-disable no-underscore-dangle */
 import express from 'express';
-import { async } from 'regenerator-runtime';
 
 import chatService from '../services/chatService';
 import serverErrorSafe from '../utils/serverErrorSafe';
