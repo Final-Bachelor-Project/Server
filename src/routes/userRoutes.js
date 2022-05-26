@@ -114,6 +114,34 @@ router.get('/current/tracks', async (req, res) => {
   res.status(200).send(tracks);
 });
 
+// Get users common tracks
+router.get('/tracks/common/:id', async (req, res) => {
+  const { id } = req.params;
+
+  const user = await userService.getUserById(id);
+  const tracks = await userService.getUsersCommonTracks(
+    req.session.loggedInUser,
+    user,
+    req.session.accessToken
+  );
+
+  res.status(200).send(tracks);
+});
+
+// Get users common artists
+router.get('/artists/common/:id', async (req, res) => {
+  const { id } = req.params;
+
+  const user = await userService.getUserById(id);
+  const artits = await userService.getUsersCommonArtists(
+    req.session.loggedInUser,
+    user,
+    req.session.accessToken
+  );
+
+  res.status(200).send(artits);
+});
+
 export default {
   router: serverErrorSafe(router)
 };

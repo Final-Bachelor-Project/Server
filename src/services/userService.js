@@ -93,13 +93,13 @@ const getAllUsers = async (loggedInUser) => {
           if (user.tracks && currentUser.tracks) {
             const currentUserTracks = getListOfTracks(currentUser);
             const userTracks = getListOfTracks(user);
-            tracksScore = helperFunctions.comepareArrays(currentUserTracks, userTracks);
+            tracksScore = helperFunctions.compareArrays(currentUserTracks, userTracks);
           }
 
           if (user.artists && currentUser.artists) {
             const currentUserArtists = getListOfArtists(currentUser);
             const userArtists = getListOfArtists(user);
-            artistsScore = helperFunctions.comepareArrays(currentUserArtists, userArtists);
+            artistsScore = helperFunctions.compareArrays(currentUserArtists, userArtists);
           }
 
           const score = helperFunctions.caculateAverageScore(tracksScore, artistsScore);
@@ -207,6 +207,51 @@ const saveUserTopArtists = async (accessToken, id) => {
   await User.updateOne({ _id: oId }, { artists });
 };
 
+// Get user's common tracks
+const getUsersCommonTracks = async (loggedInUser, user, accessToken) => {
+  const currentUserTracks = getListOfTracks(loggedInUser);
+  const userTracks = getListOfTracks(user);
+
+  const commonTracksIds = currentUserTracks.filter((track) => userTracks.includes(track));
+
+  const commonTracks = await Promise.all(commonTracksIds.map(async (id) => {
+    const track = await axios.get(`https://api.spotify.com/v1/tracks/${id}`, {
+      headers: { Authorization: `Bearer ${accessToken}` }
+    });
+
+    return {
+      name: track.data.name,
+      id: track.data.id,
+      image: track.data.album.images[0].url
+    };
+  }));
+
+  return commonTracks.slice(0, 5);
+};
+
+// Get users common artits
+const getUsersCommonArtists = async (loggedInUser, user, accessToken) => {
+  const currentUserArtists = getListOfArtists(loggedInUser);
+  const userArtists = getListOfArtists(user);
+
+  const commonArtistsIds = currentUserArtists.filter((artist) => userArtists.includes(artist));
+  const commonArtists = await Promise.all(
+    commonArtistsIds.map(async (id) => {
+      const artist = await axios.get(`https://api.spotify.com/v1/artists/${id}`, {
+        headers: { Authorization: `Bearer ${accessToken}` }
+      });
+
+      return {
+        name: artist.data.name,
+        id: artist.data.id,
+        image: artist.data.images[0].url
+      };
+    })
+  );
+
+  return commonArtists.slice(0, 5);
+};
+
 export default {
   createUser,
   getCurrentUser,
@@ -219,5 +264,7 @@ export default {
   saveUserTopTracks,
   getUserSpotifyTracks,
   saveUserTopArtists,
-  getUserSpotifyArtists
+  getUserSpotifyArtists,
+  getUsersCommonTracks,
+  getUsersCommonArtists
 };
