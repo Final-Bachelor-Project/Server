@@ -50,8 +50,8 @@ const createChat = async (userId1, userId2) => {
     createdAt: Date.now()
   }).save();
 
-  const participants = chat.participants.filter((participant) => participant !== oId1);
-  const user = await userService.getUserById(participants[0]);
+  const filteredParticipants = chat.participants.filter((participant) => participant !== oId1);
+  const user = await userService.getUserById(filteredParticipants[0]);
 
   return {
     id: chat._id,
