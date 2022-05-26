@@ -29,8 +29,6 @@ const getChatByUsersIds = async (userId1, userId2) => {
     return null;
   }
 
-  // participant object(username, profile_image)
-  // lastMessage
   const chat = chats[0];
   const participants = chat.participants.filter((participant) => participant !== oId1);
   const user = await userService.getUserById(participants[0]);
@@ -52,7 +50,13 @@ const createChat = async (userId1, userId2) => {
     createdAt: Date.now()
   }).save();
 
-  return chat;
+  const participants = chat.participants.filter((participant) => participant !== oId1);
+  const user = await userService.getUserById(participants[0]);
+
+  return {
+    id: chat._id,
+    user
+  };
 };
 
 // Delete chat
