@@ -93,13 +93,13 @@ const getAllUsers = async (loggedInUser) => {
           if (user.tracks && currentUser.tracks) {
             const currentUserTracks = getListOfTracks(currentUser);
             const userTracks = getListOfTracks(user);
-            tracksScore = helperFunctions.comepareArrays(currentUserTracks, userTracks);
+            tracksScore = helperFunctions.compareArrays(currentUserTracks, userTracks);
           }
 
           if (user.artists && currentUser.artists) {
             const currentUserArtists = getListOfArtists(currentUser);
             const userArtists = getListOfArtists(user);
-            artistsScore = helperFunctions.comepareArrays(currentUserArtists, userArtists);
+            artistsScore = helperFunctions.compareArrays(currentUserArtists, userArtists);
           }
 
           const score = helperFunctions.caculateAverageScore(tracksScore, artistsScore);
@@ -207,6 +207,16 @@ const saveUserTopArtists = async (accessToken, id) => {
   await User.updateOne({ _id: oId }, { artists });
 };
 
+// Get user's common tracks
+const getUsersCommonTracks = async (loggedInUser, user) => {
+  const currentUserTracks = getListOfTracks(loggedInUser);
+  const userTracks = getListOfTracks(user);
+
+  const commonTracks = currentUserTracks.filter((track) => userTracks.includes(track));
+
+  return commonTracks;
+};
+
 export default {
   createUser,
   getCurrentUser,
@@ -219,5 +229,6 @@ export default {
   saveUserTopTracks,
   getUserSpotifyTracks,
   saveUserTopArtists,
-  getUserSpotifyArtists
+  getUserSpotifyArtists,
+  getUsersCommonTracks
 };

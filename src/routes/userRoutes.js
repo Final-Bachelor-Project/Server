@@ -114,6 +114,16 @@ router.get('/current/tracks', async (req, res) => {
   res.status(200).send(tracks);
 });
 
+// Get users common tracks
+router.get('/tracks/:id/common', async (req, res) => {
+  const { id } = req.params;
+
+  const user = await userService.getUserById(id);
+  const tracks = await userService.getUsersCommonTracks(req.loggedInUser, user);
+
+  res.status(200).send(tracks);
+});
+
 export default {
   router: serverErrorSafe(router)
 };
