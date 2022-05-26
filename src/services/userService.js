@@ -238,7 +238,7 @@ const getUsersCommonArtists = async (loggedInUser, user, accessToken) => {
   const commonArtistsIds = currentUserArtists.filter((artist) => userArtists.includes(artist));
   const commonArtists = await Promise.all(
     commonArtistsIds.map(async (id) => {
-      const artist = await axios.get(`https://api.spotify.com/v1/artitst/${id}`, {
+      const artist = await axios.get(`https://api.spotify.com/v1/artists/${id}`, {
         headers: { Authorization: `Bearer ${accessToken}` }
       });
 
