@@ -11,11 +11,21 @@ import userService from './userService';
 // };
 
 // Get current user all chats
-const getCurrentUserChats = async (user) => {
-  const oId = mongoose.Types.ObjectId(user._id);
+const getCurrentUserChats = async (currentUser) => {
+  const oId = mongoose.Types.ObjectId(currentUser._id);
   const chats = await Chat.find({ participants: { $in: [oId] } });
 
-  return chats;
+  const finalResult = await Promise.all(chats.map(async (chat) => {
+    const participants = chat.participants.filter((participant) => participant !== oId);
+    const user = await userService.getUserById(participants[0]);
+
+    return {
+      id: chat._id,
+      user
+    };
+  }));
+
+  return finalResult;
 };
 
 // Get chat by users id
