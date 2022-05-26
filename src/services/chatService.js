@@ -38,14 +38,7 @@ const getChatByUsersIds = async (userId1, userId2) => {
     return null;
   }
 
-  const chat = chats[0];
-  const participants = chat.participants.filter((participant) => participant !== oId1);
-  const user = await userService.getUserById(participants[0]);
-
-  return {
-    id: chat._id,
-    user
-  };
+  return chats[0];
 };
 
 // Create chat
@@ -59,8 +52,17 @@ const createChat = async (userId1, userId2) => {
     createdAt: Date.now()
   }).save();
 
-  const filteredParticipants = chat.participants.filter((participant) => participant !== oId1);
-  const user = await userService.getUserById(filteredParticipants[0]);
+  return chat;
+};
+
+// Get chat by id
+const getChatById = async (id, currentUserId) => {
+  const oId1 = mongoose.Types.ObjectId(id);
+  const oId2 = mongoose.Types.ObjectId(currentUserId);
+
+  const chat = await Chat.findById({ _id: oId1 });
+  const participants = chat.participants.filter((participant) => !participant.equals(oId2));
+  const user = await userService.getUserById(participants[0]);
 
   return {
     id: chat._id,
@@ -74,5 +76,6 @@ export default {
   // connect,
   getCurrentUserChats,
   getChatByUsersIds,
-  createChat
+  createChat,
+  getChatById
 };
