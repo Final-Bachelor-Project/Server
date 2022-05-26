@@ -16,9 +16,8 @@ const getCurrentUserChats = async (currentUser) => {
   const chats = await Chat.find({ participants: { $in: [oId] } });
 
   const finalResult = await Promise.all(chats.map(async (chat) => {
-    const participants = chat.participants.filter((participant) => participant !== oId);
+    const participants = chat.participants.filter((participant) => !participant.equals(oId));
     const user = await userService.getUserById(participants[0]);
-
     return {
       id: chat._id,
       user
