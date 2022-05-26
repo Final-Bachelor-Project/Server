@@ -24,7 +24,11 @@ const getChatByUsersIds = async (userId1, userId2) => {
 
   const chat = await Chat.find({ participants: { $in: [oId1, oId2] } });
 
-  return chat;
+  if (chat.length === 0) {
+    return null;
+  }
+
+  return chat[0];
 };
 
 // Get chat by user id

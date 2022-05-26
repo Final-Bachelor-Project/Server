@@ -25,7 +25,7 @@ router.get('/:id', async (req, res) => {
   const { id } = req.params;
 
   let chat = await chatService.getChatByUsersIds(currentUser._id, id);
-  if (chat.length === 0) {
+  if (!chat) {
     chat = await chatService.createChat(currentUser._id, id);
   }
 
