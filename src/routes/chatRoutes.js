@@ -1,3 +1,4 @@
+/* eslint-disable no-underscore-dangle */
 import express from 'express';
 
 import chatService from '../services/chatService';
@@ -11,7 +12,7 @@ router.get('/', async (req, res) => {
   const chats = await chatService.getCurrentUserChats(currentUser);
 
   if (chats.length === 0) {
-    res.status(404).send({ message: `No chats found for user with id ${currentUser.id}` });
+    res.status(404).send({ message: `No chats found for user with id ${currentUser._id}` });
     return;
   }
 
@@ -23,9 +24,9 @@ router.get('/:id', async (req, res) => {
   const currentUser = req.session.loggedInUser;
   const { id } = req.params;
 
-  const chat = await chatService.getChatByUsersIds(currentUser.id, id);
-  if (!chat) {
-    await chatService.createChat(currentUser.id, id);
+  const chat = await chatService.getChatByUsersIds(currentUser._id, id);
+  if (chat.length === 0) {
+    await chatService.createChat(currentUser._id, id);
   }
 
   res.status(200).send(chat);
