@@ -3,6 +3,7 @@
 import mongoose from 'mongoose';
 
 import Chat from '../models/chat';
+import userService from './userService';
 
 // let io;
 // const connect = async (server) => {
@@ -22,16 +23,23 @@ const getChatByUsersIds = async (userId1, userId2) => {
   const oId1 = mongoose.Types.ObjectId(userId1);
   const oId2 = mongoose.Types.ObjectId(userId2);
 
-  const chat = await Chat.find({ participants: { $in: [oId1, oId2] } });
+  const chats = await Chat.find({ participants: { $in: [oId1, oId2] } });
 
-  if (chat.length === 0) {
+  if (chats.length === 0) {
     return null;
   }
 
-  return chat[0];
-};
+  // participant object(username, profile_image)
+  // lastMessage
+  const chat = chats[0];
+  const participants = chat.participants.filter((participant) => participant !== oId1);
+  const user = await userService.getUserById(participants[0]);
 
-// Get chat by user id
+  return {
+    id: chat._id,
+    user
+  };
+};
 
 // Create chat
 const createChat = async (userId1, userId2) => {
