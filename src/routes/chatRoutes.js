@@ -1,5 +1,4 @@
 import express from 'express';
-import { async } from 'regenerator-runtime';
 
 import chatService from '../services/chatService';
 import serverErrorSafe from '../utils/serverErrorSafe';
@@ -19,15 +18,14 @@ router.get('/', async (req, res) => {
   res.status(200).send(chats);
 });
 
-// Get chat by user ids
+// Get chat by users ids
 router.get('/:id', async (req, res) => {
   const currentUser = req.session.loggedInUser;
   const { id } = req.params;
 
   const chat = await chatService.getChatByUsersIds(currentUser.id, id);
   if (!chat) {
-    res.status(404).send({ message: 'No chat found for users' });
-    return;
+    await chatService.createChat(currentUser.id, id);
   }
 
   res.status(200).send(chat);

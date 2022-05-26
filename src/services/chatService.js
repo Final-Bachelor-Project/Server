@@ -29,11 +29,24 @@ const getChatByUsersIds = async (userId1, userId2) => {
 // Get chat by user id
 
 // Create chat
+const createChat = async (userId1, userId2) => {
+  const oId1 = mongoose.Types.ObjectId(userId1);
+  const oId2 = mongoose.Types.ObjectId(userId2);
+  const participants = [oId1, oId2];
+
+  const chat = await new Chat({
+    participants,
+    createdAt: Date.now()
+  }).save();
+
+  return chat;
+};
 
 // Delete chat
 
 export default {
   // connect,
   getCurrentUserChats,
-  getChatByUsersIds
+  getChatByUsersIds,
+  createChat
 };
