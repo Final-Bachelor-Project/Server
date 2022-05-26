@@ -133,13 +133,13 @@ router.get('/artists/common/:id', async (req, res) => {
   const { id } = req.params;
 
   const user = await userService.getUserById(id);
-  const artits = await userService.getUsersCommonArtists(
+  const artists = await userService.getUsersCommonArtists(
     req.session.loggedInUser,
     user,
     req.session.accessToken
   );
 
-  res.status(200).send(artits);
+  res.status(200).send(artists);
 });
 
 export default {
