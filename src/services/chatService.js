@@ -1,14 +1,21 @@
 /* eslint-disable no-underscore-dangle */
-// import { Server } from 'socket.io';
+import socketIo from 'socket.io';
 import mongoose from 'mongoose';
 
 import Chat from '../models/chat';
 import userService from './userService';
 
-// let io;
-// const connect = async (server) => {
-//   io = new Server(server);
-// };
+// Socket connections
+const socketConnection = async (server) => {
+  const io = socketIo(server);
+  io.sockets.on('connection', (socket) => {
+    console.log('Socket connected');
+
+    socket.on('disconnect', async () => {
+      console.log('User disconnected');
+    });
+  });
+};
 
 // Get current user all chats
 const getCurrentUserChats = async (currentUser) => {
@@ -72,9 +79,9 @@ const getChatById = async (id, currentUserId) => {
 // Delete chat
 
 export default {
-  // connect,
   getCurrentUserChats,
   getChatByUsersIds,
   createChat,
-  getChatById
+  getChatById,
+  socketConnection
 };

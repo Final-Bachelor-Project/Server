@@ -7,7 +7,7 @@ import redis from 'ioredis';
 import connectRedis from 'connect-redis';
 
 import databaseService from './services/databaseService';
-// import chatService from './services/chatService';
+import chatService from './services/chatService';
 import userRouter from './routes/userRoutes';
 import authRouter from './routes/authRoutes';
 import requestRouter from './routes/requestRoutes';
@@ -58,11 +58,8 @@ const start = async () => {
   service = app.listen(port);
   console.log('Now listening to port', port);
 
-  // Start chat
-  // app.get('/api/chat', async (req, res) => {
-  //   await chatService.connect(service);
-  //   res.status(200).send({ message: 'Succesfully set up connection' });
-  // });
+  // Sockets
+  await chatService.socketConnection(service);
 };
 
 const stop = async () => {
