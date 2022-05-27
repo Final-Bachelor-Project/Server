@@ -142,6 +142,19 @@ router.get('/artists/common/:id', async (req, res) => {
   res.status(200).send(artists);
 });
 
+// Get user by spotify user id
+router.get('?spotifyUserId', async (req, res) => {
+  const { spotifyUserId } = req.query;
+  const user = await userService.getUserBySpotifyUserId(spotifyUserId);
+
+  if (!user) {
+    res.status(404).send({ message: `No user found with spotify user id ${spotifyUserId}` });
+    return;
+  }
+
+  res.status(200).send({ user });
+});
+
 export default {
   router: serverErrorSafe(router)
 };

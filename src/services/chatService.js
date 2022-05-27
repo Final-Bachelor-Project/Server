@@ -29,10 +29,7 @@ const socketConnection = async () => {
     });
 
     socket.on('newMessage', async (data) => {
-      const { spotifyUserId, content, chatId } = data;
-      const sender = await userService.getUserBySpotifyUserId(spotifyUserId);
-      const sentBy = sender._id;
-
+      const { sentBy, content, chatId } = data;
       const message = await messageService.createMessage(sentBy, content, chatId);
       io.to(data.chatId).emit('messageReceived', message);
     });
