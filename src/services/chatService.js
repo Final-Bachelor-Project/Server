@@ -1,6 +1,7 @@
 /* eslint-disable no-underscore-dangle */
 import socketIo from 'socket.io';
 import mongoose from 'mongoose';
+import config from 'config';
 
 import Chat from '../models/chat';
 import userService from './userService';
@@ -9,7 +10,7 @@ import userService from './userService';
 const socketConnection = async (server) => {
   const io = socketIo(server, {
     cors: true,
-    origins: ['http://localhost:8080']
+    origins: [config.get('clientUri')]
   });
   io.sockets.on('connection', (socket) => {
     console.log('Socket connected');

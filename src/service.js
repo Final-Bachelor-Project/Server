@@ -40,7 +40,7 @@ const start = async () => {
   app.use(bodyparser.urlencoded({ extended: false }));
   app.use(express.static('public'));
   app.use(cors({
-    origin: config.get('clientRedirectUri'),
+    origin: config.get('clientUri'),
     credentials: true
   }));
 

@@ -10,7 +10,7 @@ import serverErrorSafe from '../utils/serverErrorSafe';
 const router = express.Router();
 
 const redirectUri = config.get('redirectUri');
-const clientRedirectUri = config.get('clientRedirectUri');
+const clientRedirectUri = config.get('clientUri');
 const clientId = config.get('clientId');
 const clientSecret = config.get('clientSecret');
 

@@ -4,6 +4,6 @@
     "clientId": "5f4ca930ce254b898b4d2d4be68ebbe4",
     "clientSecret": "bf4c35fa58524cb2bfb3f56eaa96b05c",
     "redirectUri": "http://localhost:3000/api/auth/callback/",
-    "clientRedirectUri": "http://localhost:8080",
+    "clientUri": "http://localhost:8080",
     "secret": "session_secret"
 }
