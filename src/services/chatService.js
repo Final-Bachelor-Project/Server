@@ -6,12 +6,16 @@ import config from 'config';
 import Chat from '../models/chat';
 import userService from './userService';
 
-// Socket connections
-const socketConnection = async (server) => {
-  const io = socketIo(server, {
+let io;
+const connect = async (server) => {
+  io = socketIo(server, {
     cors: true,
     origins: [config.get('clientUri')]
   });
+};
+
+// Socket connections
+const socketConnection = async () => {
   io.sockets.on('connection', (socket) => {
     console.log('Socket connected');
 
@@ -87,5 +91,6 @@ export default {
   getChatByUsersIds,
   createChat,
   getChatById,
+  connect,
   socketConnection
 };

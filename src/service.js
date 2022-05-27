@@ -61,7 +61,8 @@ const start = async () => {
   console.log('Now listening to port', port);
 
   // Sockets
-  await chatService.socketConnection(service);
+  await chatService.connect(service);
+  await chatService.socketConnection();
 };
 
 const stop = async () => {
