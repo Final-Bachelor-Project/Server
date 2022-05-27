@@ -28,10 +28,7 @@ const socketConnection = async () => {
 
     socket.on('user-joined', async (data) => {
       chatId = data.chatId;
-      socket.join(data.chatId, async () => {
-        console.log(data.chatId, 'Chat joined');
-      });
-
+      await socket.join(data.chatId);
       socket.to(data.chatId).emit('socket', 'Hello from the socket');
     });
 
