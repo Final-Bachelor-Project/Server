@@ -26,18 +26,16 @@ const socketConnection = async () => {
       console.log('User disconnected');
     });
 
-    socket.on('user-joined', async (data) => {
+    socket.on('userJoined', async (data) => {
       chatId = data.chatId;
       await socket.join(data.chatId);
-      socket.to(data.chatId).emit('socket', 'Hello from the socket');
     });
 
-    io.to(chatId).emit('io', 'Hello from the io');
-
-    // socket.on('messages', async (data) => {
-    //   const { sentBy, content, chatId } = data;
-    //   await messageService.createMessage(sentBy, content, chatId);
-    // });
+    socket.on('newMessage', async (data) => {
+      // const { sentBy, content, data } = data;
+      // await messageService.createMessage(sentBy, content, chatId);
+      io.to(data.chatId).emit('messageReceived', 'Hello');
+    });
   });
 };
 
