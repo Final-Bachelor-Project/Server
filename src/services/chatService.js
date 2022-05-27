@@ -17,7 +17,6 @@ const connect = async (server) => {
 };
 
 // Socket connections
-let chatId;
 const socketConnection = async () => {
   io.sockets.on('connection', (socket) => {
     console.log('Socket connected');
@@ -27,14 +26,13 @@ const socketConnection = async () => {
     });
 
     socket.on('userJoined', async (data) => {
-      chatId = data.chatId;
       await socket.join(data.chatId);
     });
 
     socket.on('newMessage', async (data) => {
-      // const { sentBy, content, data } = data;
-      // await messageService.createMessage(sentBy, content, chatId);
-      io.to(data.chatId).emit('messageReceived', 'Hello');
+      const { sentBy, content, chatId } = data;
+      const message = await messageService.createMessage(sentBy, content, chatId);
+      io.to(data.chatId).emit('messageReceived', message);
     });
   });
 };
