@@ -3,8 +3,10 @@ import socketIo from 'socket.io';
 import mongoose from 'mongoose';
 import config from 'config';
 
+import { async } from 'regenerator-runtime';
 import Chat from '../models/chat';
 import userService from './userService';
+import messageService from './messageService';
 
 let io;
 const connect = async (server) => {
@@ -22,6 +24,17 @@ const socketConnection = async () => {
     socket.on('disconnect', async () => {
       console.log('User disconnected');
     });
+
+    socket.on('user-joined', (data) => {
+      socket.join(data.chatId, async () => {
+        console.log(data.chatId, 'Chat joined');
+      });
+    });
+
+    // socket.on('messages', async (data) => {
+    //   const { sentBy, content, chatId } = data;
+    //   await messageService.createMessage(sentBy, content, chatId);
+    // });
   });
 };
 
