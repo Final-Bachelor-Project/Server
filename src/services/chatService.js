@@ -32,10 +32,10 @@ const socketConnection = async () => {
         console.log(data.chatId, 'Chat joined');
       });
 
-      socket.to(data.chatId).emit('Hello from the socket');
+      socket.to(data.chatId).emit('socket', 'Hello from the socket');
     });
 
-    io.to(chatId).emit('Hello from the io');
+    io.to(chatId).emit('io', 'Hello from the io');
 
     // socket.on('messages', async (data) => {
     //   const { sentBy, content, chatId } = data;
