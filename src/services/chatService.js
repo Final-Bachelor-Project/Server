@@ -7,7 +7,10 @@ import userService from './userService';
 
 // Socket connections
 const socketConnection = async (server) => {
-  const io = socketIo(server);
+  const io = socketIo(server, {
+    cors: true,
+    origins: ['http://localhost:8080']
+  });
   io.sockets.on('connection', (socket) => {
     console.log('Socket connected');
 
