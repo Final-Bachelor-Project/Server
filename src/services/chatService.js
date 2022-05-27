@@ -3,7 +3,6 @@ import socketIo from 'socket.io';
 import mongoose from 'mongoose';
 import config from 'config';
 
-import { async } from 'regenerator-runtime';
 import Chat from '../models/chat';
 import userService from './userService';
 import messageService from './messageService';
@@ -30,7 +29,10 @@ const socketConnection = async () => {
     });
 
     socket.on('newMessage', async (data) => {
-      const { sentBy, content, chatId } = data;
+      const { spotifyUserId, content, chatId } = data;
+      const sender = await userService.getUserBySpotifyUserId(spotifyUserId);
+      const sentBy = sender._id;
+
       const message = await messageService.createMessage(sentBy, content, chatId);
       io.to(data.chatId).emit('messageReceived', message);
     });
