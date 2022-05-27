@@ -65,7 +65,10 @@ const getChatByUsersIds = async (userId1, userId2) => {
     return null;
   }
 
-  return chats[0];
+  return {
+    chat: chats[0],
+    new: false
+  };
 };
 
 // Create chat
@@ -79,7 +82,10 @@ const createChat = async (userId1, userId2) => {
     createdAt: Date.now()
   }).save();
 
-  return chat;
+  return {
+    chat,
+    new: true
+  };
 };
 
 // Get chat by id
