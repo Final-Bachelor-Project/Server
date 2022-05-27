@@ -17,6 +17,7 @@ const connect = async (server) => {
 };
 
 // Socket connections
+let chatId;
 const socketConnection = async () => {
   io.sockets.on('connection', (socket) => {
     console.log('Socket connected');
@@ -26,12 +27,15 @@ const socketConnection = async () => {
     });
 
     socket.on('user-joined', async (data) => {
+      chatId = data.chatId;
       socket.join(data.chatId, async () => {
         console.log(data.chatId, 'Chat joined');
       });
 
-      socket.to(data.chatId).emit('Hello');
+      socket.to(data.chatId).emit('Hello from the socket');
     });
+
+    io.to(chatId).emit('Hello from the io');
 
     // socket.on('messages', async (data) => {
     //   const { sentBy, content, chatId } = data;
