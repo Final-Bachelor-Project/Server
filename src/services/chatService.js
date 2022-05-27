@@ -25,10 +25,12 @@ const socketConnection = async () => {
       console.log('User disconnected');
     });
 
-    socket.on('user-joined', (data) => {
+    socket.on('user-joined', async (data) => {
       socket.join(data.chatId, async () => {
         console.log(data.chatId, 'Chat joined');
       });
+
+      socket.to(data.chatId).emit('Hello');
     });
 
     // socket.on('messages', async (data) => {
