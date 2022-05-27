@@ -1,6 +1,6 @@
 import RBO from 'rbo';
 
-const comepareArrays = (listA, listB) => {
+const compareArrays = (listA, listB) => {
   const p = 0.5;
   const rbo = new RBO(p);
 
@@ -18,6 +18,6 @@ const caculateAverageScore = (scoreA, scoreB) => {
 };
 
 export default {
-  comepareArrays,
+  compareArrays,
   caculateAverageScore
 };
