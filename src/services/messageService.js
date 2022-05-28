@@ -5,7 +5,7 @@ import Message from '../models/message';
 // Get all messages by chat id
 const getMessagesByChatId = async (id) => {
   const oId1 = mongoose.Types.ObjectId(id);
-  const messages = await Message.find({ chatId: oId1 });
+  const messages = await Message.find({ chatId: oId1 }).sort({ dateTime: 1 });
   return messages;
 };
 
@@ -28,7 +28,6 @@ const createMessage = async (sentBy, content, chatId) => {
 const getChatLastMessage = async (id) => {
   const oId1 = mongoose.Types.ObjectId(id);
   const messages = await Message.find({ chatId: oId1 }).sort({ dateTime: -1 });
-
   return messages[0];
 };
 
