@@ -27,7 +27,7 @@ const createMessage = async (sentBy, content, chatId) => {
 // Get chat last message
 const getChatLastMessage = async (id) => {
   const oId1 = mongoose.Types.ObjectId(id);
-  const messages = await Message.find({ chatId: oId1 }).sort({ dateTime: 'desc' });
+  const messages = await Message.find({ chatId: oId1 }).sort({ dateTime: -1 });
 
   return messages[0];
 };
