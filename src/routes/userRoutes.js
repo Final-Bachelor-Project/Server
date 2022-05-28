@@ -142,9 +142,9 @@ router.get('/artists/common/:id', async (req, res) => {
   res.status(200).send(artists);
 });
 
-// Get user by spotify user id
-router.get('?spotifyUserId', async (req, res) => {
-  const { spotifyUserId } = req.query;
+router.get('/spotify/:spotifyUserId', async (req, res) => {
+  // Get user by spotify user id
+  const { spotifyUserId } = req.params;
   const user = await userService.getUserBySpotifyUserId(spotifyUserId);
 
   if (!user) {
