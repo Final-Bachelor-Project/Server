@@ -3,25 +3,9 @@ import mongoose from 'mongoose';
 import Message from '../models/message';
 
 // Get all messages by chat id
-const getMessagesByChatId = async (id, currentUserId) => {
+const getMessagesByChatId = async (id) => {
   const oId1 = mongoose.Types.ObjectId(id);
-  const oId2 = mongoose.Types.ObjectId(currentUserId);
-
-  const messagesList = await Message.find({ chatId: oId1 });
-  const messages = messagesList.map((message) => {
-    let sentByLoggedInUser = false;
-
-    if (message.sentBy.equals(oId2)) {
-      sentByLoggedInUser = true;
-    }
-
-    return {
-      sentByLoggedInUser,
-      content: message.content,
-      dateTime: message.dateTime
-    };
-  });
-
+  const messages = await Message.find({ chatId: oId1 });
   return messages;
 };
 
