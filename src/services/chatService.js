@@ -48,7 +48,7 @@ const getCurrentUserChats = async (currentUser) => {
     return {
       id: chat._id,
       user,
-      lastMessage: message.content
+      lastMessage: message
 
     };
   }));
