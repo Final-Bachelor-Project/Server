@@ -155,6 +155,30 @@ router.get('/spotify/:spotifyUserId', async (req, res) => {
   res.status(200).send({ user });
 });
 
+router.put('/', async (req, res) => {
+  const { loggedInUser } = req.session;
+  const {
+    firstName, lastName, country, city, bio, dateOfBirth
+  } = req.body;
+
+  const user = await userService.updateUser(
+    loggedInUser,
+    firstName,
+    lastName,
+    country,
+    city,
+    bio,
+    dateOfBirth
+  );
+
+  if (user) {
+    req.session.loggedInUser = user;
+    res.status(200).send({ message: 'Successfully updated user' });
+    return;
+  }
+  res.status(500).send({ message: 'Could not update user' });
+});
+
 export default {
   router: serverErrorSafe(router)
 };
