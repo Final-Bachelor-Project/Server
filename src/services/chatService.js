@@ -44,9 +44,12 @@ const getCurrentUserChats = async (currentUser) => {
   const finalResult = await Promise.all(chats.map(async (chat) => {
     const participants = chat.participants.filter((participant) => !participant.equals(oId));
     const user = await userService.getUserById(participants[0]);
+    const message = await messageService.getMessagesByChatId(chat._id);
     return {
       id: chat._id,
-      user
+      user,
+      lastMessage: message.content
+
     };
   }));
 
