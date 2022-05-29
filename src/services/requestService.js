@@ -102,7 +102,7 @@ const removeRequestBetweenUsers = async (loggedInUserId, id) => {
 
   if (requests.length > 0) {
     const odI3 = mongoose.Types.ObjectId(requests[0]._id);
-    await Request.remove({ _id: odI3 });
+    await Request.deleteMany({ _id: odI3 });
   }
 };
 

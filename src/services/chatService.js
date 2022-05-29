@@ -109,7 +109,7 @@ const getChatByParticipantId = async (id) => {
 // Delete chat
 const removeChat = async (id) => {
   const oId = mongoose.Types.ObjectId(id);
-  await Chat.remove({ _id: oId });
+  await Chat.deleteMany({ _id: oId });
 };
 
 export default {

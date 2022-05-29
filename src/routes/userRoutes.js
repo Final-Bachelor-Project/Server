@@ -109,7 +109,7 @@ router.delete('/current/connections/:id', async (req, res) => {
 
   const chat = await chatService.getChatByParticipantId(connectionId);
   await chatService.removeChat(chat._id);
-  await messageService.removeMessage(chat._id);
+  await messageService.removeMessagesByChatId(chat._id);
 
   res.status(200).send({ message: 'Connection removed' });
 });

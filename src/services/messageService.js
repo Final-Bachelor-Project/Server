@@ -34,7 +34,7 @@ const getChatLastMessage = async (id) => {
 // Delete messages by chat id
 const removeMessagesByChatId = async (id) => {
   const oId = mongoose.Types.ObjectId(id);
-  await Message.remove({ chatId: oId });
+  await Message.deleteMany({ chatId: oId });
 };
 
 export default {
