@@ -60,6 +60,7 @@ const getUserProfile = async (spotifyUserId, accessToken) => {
 const getUserById = async (id) => {
   const oId = mongoose.Types.ObjectId(id);
   const user = await User.findById({ _id: oId });
+
   return user;
 };
 
@@ -257,7 +258,7 @@ const getUsersCommonArtists = async (loggedInUser, user, accessToken) => {
 const updateUser = async (loggedInUser, firstName, lastName, country, city, bio, dateOfBirth) => {
   const oId = mongoose.Types.ObjectId(loggedInUser._id);
 
-  const user = await User.findByIdAndUpdate(oId, {
+  await User.findByIdAndUpdate(oId, {
     firstName,
     lastName,
     country,
@@ -266,7 +267,21 @@ const updateUser = async (loggedInUser, firstName, lastName, country, city, bio,
     dateOfBirth
   });
 
-  return user;
+  const updatedUser = await getUserById(loggedInUser._id);
+  return updatedUser;
+};
+
+// Check if user is a connection
+const checkIfUserIsAConnection = async (loggedInUserId, id) => {
+  const oId1 = mongoose.Types.ObjectId(loggedInUserId);
+  const oId2 = mongoose.Types.ObjectId(id);
+
+  const loggedInUser = await getUserById(oId1);
+  const { connections } = loggedInUser;
+
+  const isConnection = connections.each((connection) => connection.equals(oId2));
+
+  return isConnection;
 };
 
 export default {
@@ -284,5 +299,6 @@ export default {
   getUserSpotifyArtists,
   getUsersCommonTracks,
   getUsersCommonArtists,
-  updateUser
+  updateUser,
+  checkIfUserIsAConnection
 };
