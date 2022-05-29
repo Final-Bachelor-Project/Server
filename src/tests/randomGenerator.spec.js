@@ -2,12 +2,12 @@
 import 'regenerator-runtime';
 import config from 'config';
 
-import loginRoutes from '../routes/loginRoutes';
+import authRoutes from '../routes/authRoutes';
 
 jest.mock('config');
 beforeAll(() => {
   config.get.mockReturnValue();
 });
 test('Check if method generates string', async () => {
-  expect(typeof (loginRoutes.generateRandomString(4))).toBe('string');
+  expect(typeof (authRoutes.generateRandomString(4))).toBe('string');
 });

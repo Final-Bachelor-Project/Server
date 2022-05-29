@@ -7,9 +7,12 @@ import redis from 'ioredis';
 import connectRedis from 'connect-redis';
 
 import databaseService from './services/databaseService';
+import chatService from './services/chatService';
 import userRouter from './routes/userRoutes';
-import loginRouter from './routes/loginRoutes';
+import authRouter from './routes/authRoutes';
 import requestRouter from './routes/requestRoutes';
+import chatRouter from './routes/chatRoutes';
+import messageRouter from './routes/messageRoutes';
 import verifyAccessToken from './middleware/verifyAccessToken';
 
 let service;
@@ -38,7 +41,7 @@ const start = async () => {
   app.use(bodyparser.urlencoded({ extended: false }));
   app.use(express.static('public'));
   app.use(cors({
-    origin: config.get('clientRedirectUri'),
+    origin: config.get('clientUri'),
     credentials: true
   }));
 
@@ -48,12 +51,18 @@ const start = async () => {
   // Routes
   app.use('/api/users', verifyAccessToken, userRouter.router);
   app.use('/api/requests', verifyAccessToken, requestRouter.router);
-  app.use('/api/login', loginRouter.router);
+  app.use('/api/auth', authRouter.router);
+  app.use('/api/chats', verifyAccessToken, chatRouter.router);
+  app.use('/api/messages', verifyAccessToken, messageRouter.router);
 
   // Start server
   const port = config.get('port');
   service = app.listen(port);
   console.log('Now listening to port', port);
+
+  // Sockets
+  await chatService.connect(service);
+  await chatService.socketConnection();
 };
 
 const stop = async () => {

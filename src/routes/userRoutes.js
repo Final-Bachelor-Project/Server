@@ -3,6 +3,9 @@ import express from 'express';
 import axios from 'axios';
 
 import userService from '../services/userService';
+import chatService from '../services/chatService';
+import messageService from '../services/messageService';
+import requestService from '../services/requestService';
 import serverErrorSafe from '../utils/serverErrorSafe';
 
 const router = express.Router();
@@ -58,8 +61,7 @@ router.get('/', async (req, res) => {
   const { loggedInUser } = req.session;
   const users = await userService.getAllUsers(loggedInUser);
   if (users) {
-    res.status(200).send('It works!');
-    // res.status(200).send(users);
+    res.status(200).send(users);
     return;
   }
   res.status(404).send({ message: 'No users found' });
@@ -68,8 +70,8 @@ router.get('/', async (req, res) => {
 // Get user by id
 router.get('/:id', async (req, res) => {
   const { id } = req.params;
-  const user = await userService.getUserById(id);
 
+  const user = await userService.getUserById(id);
   if (user) {
     res.status(200).send(user);
     return;
@@ -103,6 +105,11 @@ router.delete('/current/connections/:id', async (req, res) => {
   const loggedInUserId = req.session.loggedInUser._id;
 
   await userService.removeConnection(loggedInUserId, connectionId);
+  await requestService.removeRequestBetweenUsers(loggedInUserId, connectionId);
+
+  const chat = await chatService.getChatByUsersIds(loggedInUserId, connectionId);
+  await chatService.removeChat(chat._id);
+  await messageService.removeMessagesByChatId(chat._id);
 
   res.status(200).send({ message: 'Connection removed' });
 });
@@ -113,6 +120,71 @@ router.get('/current/tracks', async (req, res) => {
   const tracks = await userService.getTopTracks(accessToken);
 
   res.status(200).send(tracks);
+});
+
+// Get users common tracks
+router.get('/tracks/common/:id', async (req, res) => {
+  const { id } = req.params;
+
+  const user = await userService.getUserById(id);
+  const tracks = await userService.getUsersCommonTracks(
+    req.session.loggedInUser,
+    user,
+    req.session.accessToken
+  );
+
+  res.status(200).send(tracks);
+});
+
+// Get users common artists
+router.get('/artists/common/:id', async (req, res) => {
+  const { id } = req.params;
+
+  const user = await userService.getUserById(id);
+  const artists = await userService.getUsersCommonArtists(
+    req.session.loggedInUser,
+    user,
+    req.session.accessToken
+  );
+
+  res.status(200).send(artists);
+});
+
+router.get('/spotify/:spotifyUserId', async (req, res) => {
+  // Get user by spotify user id
+  const { spotifyUserId } = req.params;
+  const user = await userService.getUserBySpotifyUserId(spotifyUserId);
+
+  if (!user) {
+    res.status(404).send({ message: `No user found with spotify user id ${spotifyUserId}` });
+    return;
+  }
+
+  res.status(200).send({ user });
+});
+
+router.put('/', async (req, res) => {
+  const { loggedInUser } = req.session;
+  const {
+    firstName, lastName, country, city, bio, dateOfBirth
+  } = req.body;
+
+  const user = await userService.updateUser(
+    loggedInUser,
+    firstName,
+    lastName,
+    country,
+    city,
+    bio,
+    dateOfBirth
+  );
+
+  if (user) {
+    req.session.loggedInUser = user;
+    res.status(200).send(user);
+    return;
+  }
+  res.status(500).send({ message: 'Could not update user' });
 });
 
 export default {
