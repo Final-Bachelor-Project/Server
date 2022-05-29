@@ -72,7 +72,7 @@ router.get('/:id', async (req, res) => {
   let isConnection = false;
   const user = await userService.getUserById(id);
   if (!user._id.equals(loggedInUser._id)) {
-    isConnection = await userService.isConnection(loggedInUser._id, user._id);
+    isConnection = await userService.checkIfUserIsAConnection(loggedInUser._id, user._id);
   }
 
   if (user) {
