@@ -271,19 +271,6 @@ const updateUser = async (loggedInUser, firstName, lastName, country, city, bio,
   return updatedUser;
 };
 
-// Check if user is a connection
-const checkIfUserIsAConnection = async (loggedInUserId, id) => {
-  const oId1 = mongoose.Types.ObjectId(loggedInUserId);
-  const oId2 = mongoose.Types.ObjectId(id);
-
-  const loggedInUser = await getUserById(oId1);
-  const { connections } = loggedInUser;
-
-  const isConnection = connections.forEach((connection) => connection.equals(oId2));
-
-  return isConnection;
-};
-
 export default {
   createUser,
   getCurrentUser,
@@ -299,6 +286,5 @@ export default {
   getUserSpotifyArtists,
   getUsersCommonTracks,
   getUsersCommonArtists,
-  updateUser,
-  checkIfUserIsAConnection
+  updateUser
 };
