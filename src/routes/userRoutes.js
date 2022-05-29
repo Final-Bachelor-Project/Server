@@ -69,17 +69,14 @@ router.get('/:id', async (req, res) => {
   const { id } = req.params;
   const { loggedInUser } = req.session;
 
-  let isConnection = false;
   const user = await userService.getUserById(id);
+  user.isConnection = false;
   if (!user._id.equals(loggedInUser._id)) {
-    isConnection = await userService.checkIfUserIsAConnection(loggedInUser._id, user._id);
+    user.isConnection = await userService.checkIfUserIsAConnection(loggedInUser._id, user._id);
   }
 
   if (user) {
-    res.status(200).send({
-      user,
-      isConnection
-    });
+    res.status(200).send(user);
     return;
   }
   res.status(404).send({ message: `No user found with the id ${id}` });
