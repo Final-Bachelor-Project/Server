@@ -1,5 +1,8 @@
+/* eslint-disable max-len */
 /* eslint-disable import/no-cycle */
 /* eslint-disable no-underscore-dangle */
+/* eslint-disable-next-line max-len */
+
 import axios from 'axios';
 import mongoose from 'mongoose';
 
@@ -8,7 +11,6 @@ import requestService from './requestService';
 import helperFunctions from '../utils/helperFunctions';
 
 // Create user
-// eslint-disable-next-line max-len
 const createUser = async (spotifyUserId, username, firstName, lastName, profileImage, country, city, bio, dateOfBirth, tracks, artists) => {
   const user = await new User({
     spotifyUserId,
@@ -58,7 +60,6 @@ const getUserProfile = async (spotifyUserId, accessToken) => {
 const getUserById = async (id) => {
   const oId = mongoose.Types.ObjectId(id);
   const user = await User.findById({ _id: oId });
-
   return user;
 };
 
@@ -79,8 +80,8 @@ const getListOfArtists = (user) => {
 // Get all registered users except the logged in one
 const getAllUsers = async (loggedInUser) => {
   const oId = mongoose.Types.ObjectId(loggedInUser._id);
-  const users = await User.find({ _id: { $ne: oId } });
 
+  const users = await User.find({ _id: { $ne: oId } });
   const currentUser = await getUserById(loggedInUser._id);
 
   const usersList = [];
@@ -252,6 +253,22 @@ const getUsersCommonArtists = async (loggedInUser, user, accessToken) => {
   return commonArtists.slice(0, 5);
 };
 
+// Update user
+const updateUser = async (loggedInUser, username, firstName, lastName, country, city, bio, dateOfBirth) => {
+  const oId = mongoose.Types.ObjectId(loggedInUser._id);
+
+  const user = await User.findByIdAndUpdate(oId, {
+    firstName,
+    lastName,
+    country,
+    city,
+    bio,
+    dateOfBirth
+  });
+
+  return user;
+};
+
 export default {
   createUser,
   getCurrentUser,
@@ -266,5 +283,6 @@ export default {
   saveUserTopArtists,
   getUserSpotifyArtists,
   getUsersCommonTracks,
-  getUsersCommonArtists
+  getUsersCommonArtists,
+  updateUser
 };

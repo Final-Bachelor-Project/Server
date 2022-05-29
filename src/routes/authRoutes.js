@@ -10,7 +10,7 @@ import serverErrorSafe from '../utils/serverErrorSafe';
 const router = express.Router();
 
 const redirectUri = config.get('redirectUri');
-const clientRedirectUri = config.get('clientRedirectUri');
+const clientRedirectUri = config.get('clientUri');
 const clientId = config.get('clientId');
 const clientSecret = config.get('clientSecret');
 
@@ -91,23 +91,6 @@ router.get('/callback', async (req, res) => {
 
   res.redirect(`${clientRedirectUri}/complete`);
 });
-
-// // Postman session
-// router.get('/session', async (req, res) => {
-//   const currentSpotifyUser = await userService.getCurrentUser(req.headers.session);
-//   if (!currentSpotifyUser) {
-//     res.status(404).send({ message: 'User not found' });
-//     return;
-//   }
-
-//   const existingUser = await userService.getUserBySpotifyUserId(currentSpotifyUser.data.id);
-//   if (existingUser) {
-//     req.session.loggedInUser = existingUser;
-//     res.status(200).send({ message: 'Successfully set up logged in user' });
-//     return;
-//   }
-//   res.status(200).send({ message: 'Successfully set up logged in user' });
-// });
 
 // Get session
 router.get('/session', (req, res) => {
