@@ -107,7 +107,7 @@ router.delete('/current/connections/:id', async (req, res) => {
   await userService.removeConnection(loggedInUserId, connectionId);
   await requestService.removeRequestBetweenUsers(loggedInUserId, connectionId);
 
-  const chat = await chatService.getChatByParticipantId(connectionId);
+  const chat = await chatService.getChatByUsersIds(loggedInUserId, connectionId);
   await chatService.removeChat(chat._id);
   await messageService.removeMessagesByChatId(chat._id);
 
