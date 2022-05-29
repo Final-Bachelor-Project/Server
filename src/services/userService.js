@@ -138,8 +138,8 @@ const removeConnection = async (firstUserId, secondUserId) => {
   const firstUserOId = mongoose.Types.ObjectId(firstUserId);
   const secondUserOId = mongoose.Types.ObjectId(secondUserId);
 
-  await User.updateOne({ _id: firstUserOId }, { $pullAll: { connections: secondUserOId } });
-  await User.updateOne({ _id: secondUserOId }, { $pullAll: { connections: firstUserOId } });
+  await User.updateOne({ _id: firstUserOId }, { $pullAll: { connections: [secondUserOId] } });
+  await User.updateOne({ _id: secondUserOId }, { $pullAll: { connections: [firstUserOId] } });
 };
 
 // Get user connections
