@@ -173,7 +173,7 @@ router.put('/', async (req, res) => {
 
   if (user) {
     req.session.loggedInUser = user;
-    res.status(200).send({ message: 'Successfully updated user' });
+    res.status(200).send(user);
     return;
   }
   res.status(500).send({ message: 'Could not update user' });
