@@ -254,7 +254,7 @@ const getUsersCommonArtists = async (loggedInUser, user, accessToken) => {
 };
 
 // Update user
-const updateUser = async (loggedInUser, username, firstName, lastName, country, city, bio, dateOfBirth) => {
+const updateUser = async (loggedInUser, firstName, lastName, country, city, bio, dateOfBirth) => {
   const oId = mongoose.Types.ObjectId(loggedInUser._id);
 
   const user = await User.findByIdAndUpdate(oId, {
