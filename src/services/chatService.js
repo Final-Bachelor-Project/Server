@@ -98,7 +98,19 @@ const getChatById = async (id, currentUserId) => {
   };
 };
 
+// Get chat by participant id
+const getChatByParticipantId = async (id) => {
+  const oId = mongoose.Types.ObjectId(id);
+
+  const chat = await Chat.find({ participants: oId });
+  return chat;
+};
+
 // Delete chat
+const removeChat = async (id) => {
+  const oId = mongoose.Types.ObjectId(id);
+  await Chat.remove({ _id: oId });
+};
 
 export default {
   getCurrentUserChats,
@@ -106,5 +118,7 @@ export default {
   createChat,
   getChatById,
   connect,
-  socketConnection
+  socketConnection,
+  removeChat,
+  getChatByParticipantId
 };

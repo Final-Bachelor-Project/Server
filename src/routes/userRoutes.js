@@ -3,6 +3,9 @@ import express from 'express';
 import axios from 'axios';
 
 import userService from '../services/userService';
+import chatService from '../services/chatService';
+import messageService from '../services/messageService';
+import requestService from '../services/requestService';
 import serverErrorSafe from '../utils/serverErrorSafe';
 
 const router = express.Router();
@@ -102,6 +105,11 @@ router.delete('/current/connections/:id', async (req, res) => {
   const loggedInUserId = req.session.loggedInUser._id;
 
   await userService.removeConnection(loggedInUserId, connectionId);
+  await requestService.removeRequestBetweenUsers(loggedInUserId, connectionId);
+
+  const chat = await chatService.getChatByParticipantId(connectionId);
+  await chatService.removeChat(chat._id);
+  await messageService.removeMessage(chat._id);
 
   res.status(200).send({ message: 'Connection removed' });
 });

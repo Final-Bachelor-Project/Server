@@ -26,13 +26,20 @@ const createMessage = async (sentBy, content, chatId) => {
 
 // Get chat last message
 const getChatLastMessage = async (id) => {
-  const oId1 = mongoose.Types.ObjectId(id);
-  const messages = await Message.find({ chatId: oId1 }).sort({ dateTime: -1 });
+  const oId = mongoose.Types.ObjectId(id);
+  const messages = await Message.find({ chatId: oId }).sort({ dateTime: -1 });
   return messages[0];
+};
+
+// Delete messages by chat id
+const removeMessagesByChatId = async (id) => {
+  const oId = mongoose.Types.ObjectId(id);
+  await Message.remove({ chatId: oId });
 };
 
 export default {
   getMessagesByChatId,
   createMessage,
-  getChatLastMessage
+  getChatLastMessage,
+  removeMessagesByChatId
 };

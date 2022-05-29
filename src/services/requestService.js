@@ -1,3 +1,4 @@
+/* eslint-disable no-underscore-dangle */
 /* eslint-disable import/no-cycle */
 import mongoose from 'mongoose';
 
@@ -72,18 +73,37 @@ const checkIfPendingRequestBetweenUsers = async (loggedInUserId, id) => {
   const oId1 = mongoose.Types.ObjectId(loggedInUserId);
   const oId2 = mongoose.Types.ObjectId(id);
 
-  let requests = await Request.find({ senderId: oId1, receiverId: oId2, status: 'pending' });
+  const requests = await Request.find({
+    $or: [{
+      $and: [{ senderId: oId1 }, { receiverId: oId2 }, { status: 'pending' }]
+    },
+    { $and: [{ senderId: oId2 }, { receiverId: oId1 }, { status: 'pending' }] }
+    ]
+  });
+
   if (requests.length === 0) {
-    requests = await Request.find({ senderId: oId2, receiverId: oId1, status: 'pending' });
-
-    if (requests.length === 0) {
-      return false;
-    }
-
     return false;
   }
 
   return true;
+};
+
+const removeRequestBetweenUsers = async (loggedInUserId, id) => {
+  const oId1 = mongoose.Types.ObjectId(loggedInUserId);
+  const oId2 = mongoose.Types.ObjectId(id);
+
+  const requests = await Request.find({
+    $or: [{
+      $and: [{ senderId: oId1 }, { receiverId: oId2 }]
+    },
+    { $and: [{ senderId: oId2 }, { receiverId: oId1 }] }
+    ]
+  });
+
+  if (requests.length > 0) {
+    const odI3 = mongoose.Types.ObjectId(requests[0]._id);
+    await Request.remove({ _id: odI3 });
+  }
 };
 
 export default {
@@ -91,5 +111,6 @@ export default {
   confirmOrDeclineRequest,
   getUserPendingRequests,
   checkIfUserHasRequests,
-  checkIfPendingRequestBetweenUsers
+  checkIfPendingRequestBetweenUsers,
+  removeRequestBetweenUsers
 };
