@@ -68,9 +68,28 @@ const checkIfUserHasRequests = async (userId, loggedInUserId) => {
   return false;
 };
 
+const checkIfPendingRequestBetweenUsers = async (loggedInUserId, id) => {
+  const oId1 = mongoose.Types.ObjectId(loggedInUserId);
+  const oId2 = mongoose.Types.ObjectId(id);
+
+  let requests = await Request.find({ senderId: oId1, receiverId: oId2, status: 'pending' });
+  if (requests.length === 0) {
+    requests = await Request.find({ senderId: oId2, receiverId: oId1, status: 'pending' });
+
+    if (requests.length === 0) {
+      return false;
+    }
+
+    return false;
+  }
+
+  return true;
+};
+
 export default {
   createRequest,
   confirmOrDeclineRequest,
   getUserPendingRequests,
-  checkIfUserHasRequests
+  checkIfUserHasRequests,
+  checkIfPendingRequestBetweenUsers
 };

@@ -1,3 +1,4 @@
+/* eslint-disable no-underscore-dangle */
 import express from 'express';
 
 import requestService from '../services/requestService';
@@ -8,7 +9,6 @@ const router = express.Router();
 // Create request
 router.post('/', async (req, res) => {
   const { receiverId } = req.body;
-  // eslint-disable-next-line no-underscore-dangle
   const senderId = req.session.loggedInUser._id;
   const request = await requestService.createRequest(senderId, receiverId);
 
@@ -32,9 +32,8 @@ router.put('/:id', async (req, res) => {
   res.status(409).send({ message: 'Wrong status' });
 });
 
-// Get user pending requests
+// Get current user pending requests
 router.get('/', async (req, res) => {
-  // eslint-disable-next-line no-underscore-dangle
   const loggedInUserId = req.session.loggedInUser._id;
   const requests = await requestService.getUserPendingRequests(loggedInUserId);
 
@@ -43,6 +42,16 @@ router.get('/', async (req, res) => {
     return;
   }
   res.status(404).send({ message: 'No pending requests found' });
+});
+
+// Check if pending requests between users
+router.get('/users/:id', async (req, res) => {
+  const loggedInUserId = req.session.loggedInUser._id;
+  const { id } = req.params;
+
+  const check = await requestService.checkIfPendingRequestBetweenUsers(loggedInUserId, id);
+
+  res.status(200).send(check);
 });
 
 export default {
