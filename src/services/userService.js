@@ -279,7 +279,7 @@ const checkIfUserIsAConnection = async (loggedInUserId, id) => {
   const loggedInUser = await getUserById(oId1);
   const { connections } = loggedInUser;
 
-  const isConnection = connections.each((connection) => connection.equals(oId2));
+  const isConnection = connections.forEach((connection) => connection.equals(oId2));
 
   return isConnection;
 };
