@@ -1,7 +1,7 @@
 import RBO from 'rbo';
 
 const compareArrays = (listA, listB) => {
-  const p = 0.8;
+  const p = 0.7;
   const rbo = new RBO(p);
 
   if (listA.length === 0 || listB.length === 0) {
