@@ -154,7 +154,7 @@ const getUserConnections = async (connectionsIds) => {
 
 // Get current user top tracks data from spotify
 const getUserSpotifyTracks = async (accessToken) => {
-  const tracks = await axios.get('https://api.spotify.com/v1/me/top/tracks?time_range=short_term', {
+  const tracks = await axios.get('https://api.spotify.com/v1/me/top/tracks', {
     headers: { Authorization: `Bearer ${accessToken}` }
   });
 
