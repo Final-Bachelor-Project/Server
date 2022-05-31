@@ -5,7 +5,7 @@ on:
   workflow_dispatch:
 jobs:
   buildAndTest:
-    uses: ./.github/workflows/buildAndTest.yml
+    needs: ./.github/workflows/buildAndTest.yml
 
   deployment:
     runs-on: self-hosted
