@@ -4,8 +4,10 @@ on:
     branches: [ master]
   workflow_dispatch:
 jobs:
-  deployment:
+  buildAndTest:
     uses: ./.github/workflows/buildAndTest.yml
+
+  deployment:
     runs-on: self-hosted
     steps:
       - name: Restard server
