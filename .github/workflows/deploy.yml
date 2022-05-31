@@ -5,10 +5,11 @@ on:
   workflow_dispatch:
 jobs:
   buildAndTest:
-    needs: ./.github/workflows/buildAndTest.yml
+    uses: ./.github/workflows/buildAndTest.yml
 
   deployment:
     runs-on: self-hosted
+    needs: buildAndTest
     steps:
       - name: Restard server
         run: pm2 restart tuneBudyServer
