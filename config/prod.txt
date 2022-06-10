@@ -1,3 +1,0 @@
- http://207.154.223.42/api/login - server
- http://164.92.251.2 - client
- 
