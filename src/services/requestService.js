@@ -54,6 +54,7 @@ const getUserPendingRequests = async (loggedInUserId) => {
   return requestsWithUser;
 };
 
+// Check if user has requests
 const checkIfUserHasRequests = async (userId, loggedInUserId) => {
   const requests = await Request.find({
     $or: [{
@@ -69,6 +70,7 @@ const checkIfUserHasRequests = async (userId, loggedInUserId) => {
   return false;
 };
 
+// Check for pending requests between users
 const checkIfPendingRequestBetweenUsers = async (loggedInUserId, id) => {
   const oId1 = mongoose.Types.ObjectId(loggedInUserId);
   const oId2 = mongoose.Types.ObjectId(id);
@@ -88,6 +90,7 @@ const checkIfPendingRequestBetweenUsers = async (loggedInUserId, id) => {
   return true;
 };
 
+// Remove request between users
 const removeRequestBetweenUsers = async (loggedInUserId, id) => {
   const oId1 = mongoose.Types.ObjectId(loggedInUserId);
   const oId2 = mongoose.Types.ObjectId(id);
